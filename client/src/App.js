@@ -16,16 +16,6 @@ import TranslatorProfilePage from './components/TranslatorProfilePage';
 import AdminPanel from './components/AdminPanel';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
-import Features from './components/pages/Features';
-import Pricing from './components/pages/Pricing';
-import Enterprise from './components/pages/Enterprise';
-import About from './components/pages/About';
-import Careers from './components/pages/Careers';
-import Contact from './components/pages/Contact';
-import Privacy from './components/pages/Privacy';
-import Terms from './components/pages/Terms';
-import Security from './components/pages/Security';
-import Services from './components/pages/Services';
 import NotificationProvider from './context/NotificationContext';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './components/ToastContext';
@@ -346,11 +336,7 @@ function HomePage({ onAuthenticated }) {
               onClick={toggleDarkMode}
               aria-label="Toggle theme"
             >
-              {isDarkMode ? (
-                <img src="/images/sun-icon.svg" alt="Sun" style={{width: '20px', height: '20px'}} />
-              ) : (
-                <img src="/images/moon-icon.svg" alt="Moon" style={{width: '20px', height: '20px'}} />
-              )}
+              {isDarkMode ? '☀️' : '🌙'}
             </button>
             <button
               className="login-button"
@@ -405,13 +391,17 @@ function HomePage({ onAuthenticated }) {
                       </div>
                     </div>
                     <div className="preview-content">
-                      <img src="/images/home-photo.jpg" alt="Legal Translation Platform" />
+                      <img src="/images/legal-translation-lingolink.svg" alt="Legal Translation Platform" />
                     </div>
                   </div>
                 </div>
               </>
             ) : (
-              <div className="auth-modal-centered">
+              <div className="auth-container-frame">
+                <div className="auth-frame-header">
+                  <h2>{t('signIn')}</h2>
+                  <button className="close-auth-btn" onClick={closeAuthForm}>×</button>
+                </div>
                 <AuthPage
                   onSuccess={closeAuthForm}
                   currentLanguage={currentLanguage}
@@ -564,7 +554,7 @@ function HomePage({ onAuthenticated }) {
                 <img src="/new-main-logo.svg" alt="LingoLink" className="logo" />
                 <span className="brand-name">LINGOLINK</span>
               </div>
-              <p>Connecting cultures through expert translation services</p>
+              <p>Professional translations powered by AI</p>
             </div>
             <div className="footer-section">
               <h4>Product</h4>
@@ -586,7 +576,7 @@ function HomePage({ onAuthenticated }) {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© 2025 LingoLink. All rights reserved.</p>
+            <p>© 2024 LingoLink. All rights reserved.</p>
           </div>
         </footer>
       </div>
@@ -652,16 +642,6 @@ function App() {
               <Route path="/translator/:id" element={<TranslatorProfilePage />} />
               <Route path="/admin" element={user?.userType === 'admin' ? <AdminPanel /> : <Navigate to="/dashboard" />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              <Route path="/features" element={<Features />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/enterprise" element={<Enterprise />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/security" element={<Security />} />
-              <Route path="/services" element={<Services />} />
             </Routes>
           </Router>
         </NotificationProvider>
