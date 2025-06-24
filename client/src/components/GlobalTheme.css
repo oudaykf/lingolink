@@ -1,0 +1,302 @@
+/* Global Theme Variables and Unified Color System */
+:root {
+  /* Default Turquoise Theme */
+  --primary-color: #20B2AA;
+  --secondary-color: #48D1CC;
+  --accent-color: #00CED1;
+  --background-color: #F0FDFF;
+  --surface-color: #FFFFFF;
+  --text-color: #1A202C;
+  --text-secondary-color: #4A5568;
+  --gradient-bg: linear-gradient(135deg, #20B2AA 0%, #48D1CC 100%);
+  --accent-color-rgb: 32, 178, 170;
+  
+  /* Animation Variables */
+  --animations-enabled: 1;
+  --animation-speed: 0.4s;
+  
+  /* Layout Variables */
+  --border-radius: 8px;
+  --box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  --spacing-unit: 1rem;
+  
+  /* Derived Colors */
+  --primary-light: rgba(var(--accent-color-rgb), 0.1);
+  --primary-medium: rgba(var(--accent-color-rgb), 0.3);
+  --primary-strong: rgba(var(--accent-color-rgb), 0.8);
+  
+  /* Component Colors */
+  --card-bg: var(--surface-color);
+  --hover-bg: rgba(var(--accent-color-rgb), 0.05);
+  --border-color: rgba(var(--accent-color-rgb), 0.2);
+  --accent-color-light: rgba(var(--accent-color-rgb), 0.1);
+}
+
+/* Apply theme colors to all components */
+* {
+  --current-primary: var(--primary-color);
+  --current-secondary: var(--secondary-color);
+  --current-accent: var(--accent-color);
+  --current-bg: var(--background-color);
+  --current-surface: var(--surface-color);
+  --current-text: var(--text-color);
+  --current-text-secondary: var(--text-secondary-color);
+}
+
+/* Animation Control */
+[data-animations="false"] * {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+[data-animations="true"] * {
+  animation-duration: var(--animation-speed);
+  transition-duration: var(--animation-speed);
+}
+
+/* Compact Mode */
+[data-compact="true"] {
+  --spacing-unit: 0.75rem;
+}
+
+[data-compact="true"] .card,
+[data-compact="true"] .dashboard-card,
+[data-compact="true"] .stat-card {
+  padding: calc(var(--spacing-unit) * 0.75);
+}
+
+[data-compact="true"] .sidebar {
+  width: 200px;
+}
+
+[data-compact="true"] h1 {
+  font-size: 1.5rem;
+}
+
+[data-compact="true"] h2 {
+  font-size: 1.25rem;
+}
+
+[data-compact="true"] h3 {
+  font-size: 1.1rem;
+}
+
+/* Global Component Styling */
+.card,
+.dashboard-card,
+.stat-card,
+.translator-card,
+.settings-section {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: all var(--animation-speed) ease;
+}
+
+.card:hover,
+.dashboard-card:hover,
+.stat-card:hover,
+.translator-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(var(--accent-color-rgb), 0.15);
+}
+
+/* Button Styling */
+.btn,
+.button,
+button:not(.unstyled) {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: calc(var(--spacing-unit) * 0.75) var(--spacing-unit);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--animation-speed) ease;
+  box-shadow: var(--box-shadow);
+}
+
+.btn:hover,
+.button:hover,
+button:not(.unstyled):hover {
+  background: var(--secondary-color);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(var(--accent-color-rgb), 0.3);
+}
+
+.btn.secondary,
+.button.secondary {
+  background: var(--surface-color);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.btn.secondary:hover,
+.button.secondary:hover {
+  background: var(--primary-light);
+}
+
+/* Input Styling */
+input,
+textarea,
+select {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: calc(var(--spacing-unit) * 0.75);
+  background: var(--surface-color);
+  color: var(--text-color);
+  transition: all var(--animation-speed) ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.1);
+}
+
+/* Navigation Styling */
+.nav-item,
+.sidebar-item {
+  color: var(--text-secondary-color);
+  transition: all var(--animation-speed) ease;
+}
+
+.nav-item:hover,
+.sidebar-item:hover,
+.nav-item.active,
+.sidebar-item.active {
+  color: var(--primary-color);
+  background: var(--primary-light);
+}
+
+/* Text Colors */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+}
+
+p, span, div {
+  color: var(--text-secondary-color);
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary-color) !important;
+}
+
+/* Background Utilities */
+.bg-primary {
+  background: var(--primary-color) !important;
+}
+
+.bg-secondary {
+  background: var(--secondary-color) !important;
+}
+
+.bg-surface {
+  background: var(--surface-color) !important;
+}
+
+.bg-gradient {
+  background: var(--gradient-bg) !important;
+}
+
+/* Border Utilities */
+.border-primary {
+  border-color: var(--primary-color) !important;
+}
+
+.border-secondary {
+  border-color: var(--border-color) !important;
+}
+
+/* Chart and Graph Colors */
+.chart-primary {
+  color: var(--primary-color);
+  fill: var(--primary-color);
+}
+
+.chart-secondary {
+  color: var(--secondary-color);
+  fill: var(--secondary-color);
+}
+
+.chart-accent {
+  color: var(--accent-color);
+  fill: var(--accent-color);
+}
+
+/* Loading and Progress Indicators */
+.progress-bar {
+  background: var(--primary-light);
+}
+
+.progress-fill {
+  background: var(--gradient-bg);
+}
+
+.loading-spinner {
+  border-color: var(--primary-light);
+  border-top-color: var(--primary-color);
+}
+
+/* Notification and Alert Colors */
+.notification.success {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.notification.error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.notification.warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.notification.info {
+  background: var(--primary-light);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+/* Modal and Overlay Styling */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.modal,
+.popup {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: calc(var(--border-radius) * 2);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  :root {
+    --spacing-unit: 0.875rem;
+    --border-radius: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --spacing-unit: 0.75rem;
+    --border-radius: 4px;
+  }
+}

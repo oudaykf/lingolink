@@ -1,0 +1,49 @@
+.layout-settings {
+  margin-top: 16px;
+}
+
+.layout-section {
+  margin-bottom: 16px;
+}
+
+.layout-section h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.sidebar-position-options {
+  display: flex;
+  gap: 8px;
+}
+
+.layout-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-color);
+}
+
+.layout-option:hover {
+  background-color: var(--hover-bg);
+}
+
+.layout-option.active {
+  background-color: var(--accent-color-light);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.layout-option-icon {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.layout-option-name {
+  font-size: 14px;
+}

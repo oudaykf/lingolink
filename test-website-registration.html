@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Website Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #008080;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #006666;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .loading {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .debug-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Website Registration</h1>
+        <p>This page tests the exact same registration flow as the main website.</p>
+        
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required minlength="6">
+            </div>
+            
+            <div class="form-group">
+                <label for="userType">User Type:</label>
+                <select id="userType" name="userType" required>
+                    <option value="client">Client (Hire Translators)</option>
+                    <option value="translator">Translator (Work as Translator)</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="submitBtn">Create Account</button>
+        </form>
+        
+        <div id="result" class="result"></div>
+        <div id="debugInfo" class="debug-info"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5001';
+        
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+        
+        function showDebugInfo(info) {
+            const debugDiv = document.getElementById('debugInfo');
+            debugDiv.textContent = info;
+        }
+        
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const formData = new FormData(e.target);
+            
+            const userData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                userType: formData.get('userType')
+            };
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating Account...';
+            showResult('Sending registration request...', 'loading');
+            
+            let debugInfo = `Registration attempt:\n`;
+            debugInfo += `API URL: ${API_URL}/api/auth/register\n`;
+            debugInfo += `User Data: ${JSON.stringify({...userData, password: '[REDACTED]'}, null, 2)}\n\n`;
+            
+            try {
+                const startTime = Date.now();
+                
+                const response = await fetch(`${API_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const endTime = Date.now();
+                debugInfo += `Request completed in ${endTime - startTime}ms\n`;
+                debugInfo += `Response Status: ${response.status} ${response.statusText}\n`;
+                
+                const contentType = response.headers.get('content-type');
+                debugInfo += `Content-Type: ${contentType}\n\n`;
+                
+                let data;
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                    debugInfo += `Response Data: ${JSON.stringify(data, null, 2)}\n\n`;
+                } else {
+                    const text = await response.text();
+                    debugInfo += `Response Text: ${text}\n\n`;
+                    throw new Error('Server returned non-JSON response');
+                }
+                
+                if (response.ok) {
+                    showResult(`✅ Registration successful! Welcome ${data.user.name}!`, 'success');
+                    debugInfo += `SUCCESS: User registered and saved to database\n`;
+                    debugInfo += `User ID: ${data.user.id}\n`;
+                    debugInfo += `Token received: ${data.token ? 'Yes' : 'No'}\n`;
+                    
+                    // Save to localStorage like the real app does
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    debugInfo += `Data saved to localStorage\n`;
+                } else {
+                    throw new Error(data.message || data.error || 'Registration failed');
+                }
+                
+            } catch (error) {
+                debugInfo += `ERROR: ${error.message}\n`;
+                showResult(`❌ Registration failed: ${error.message}`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Account';
+                showDebugInfo(debugInfo);
+            }
+        });
+        
+        // Check if user is already logged in
+        window.addEventListener('load', () => {
+            const savedUser = localStorage.getItem('user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                showResult(`You are already logged in as ${user.name} (${user.email})`, 'success');
+            }
+        });
+    </script>
+</body>
+</html>

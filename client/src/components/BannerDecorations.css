@@ -1,0 +1,96 @@
+.banner-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.decoration {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Decoration Types */
+.decoration.dot {
+  border-radius: 50%;
+}
+
+.decoration.line {
+  border-radius: 4px;
+}
+
+.decoration.wave {
+  height: 20px;
+  border-radius: 50%;
+  transform: scaleY(0.2);
+}
+
+.decoration.triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  border-radius: 0;
+}
+
+.decoration.square {
+  border-radius: 4px;
+}
+
+.decoration.hexagon {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  border-radius: 0;
+}
+
+/* Animation Types */
+.decoration.animation-fade {
+  animation: fadeInOut 8s infinite ease-in-out;
+}
+
+.decoration.animation-slide {
+  animation: slide 15s infinite linear;
+}
+
+.decoration.animation-pulse {
+  animation: pulse 4s infinite ease-in-out;
+}
+
+.decoration.animation-particles {
+  animation: particles 20s infinite linear;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-100%) translateY(0);
+  }
+  100% {
+    transform: translateX(200%) translateY(20px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(0.8); 
+    opacity: 0.2;
+  }
+  50% { 
+    transform: scale(1.2); 
+    opacity: 0.5;
+  }
+}
+
+@keyframes particles {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateX(100px) translateY(100px) rotate(360deg);
+  }
+}

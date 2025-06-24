@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    h1 {
+      color: #20B2AA;
+      border-bottom: 2px solid #20B2AA;
+      padding-bottom: 10px;
+    }
+    
+    .container {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .form-container {
+      flex: 1;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    
+    .result-container {
+      flex: 1;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    
+    h2 {
+      color: #20B2AA;
+      margin-top: 0;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background-color: #20B2AA;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    button:hover {
+      background-color: #199692;
+    }
+    
+    .error {
+      color: #e74c3c;
+      margin-top: 10px;
+    }
+    
+    .success {
+      color: #2ecc71;
+      margin-top: 10px;
+    }
+    
+    pre {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+    }
+    
+    .tab.active {
+      background-color: #20B2AA;
+      color: white;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Authentication Test</h1>
+  
+  <div class="tabs">
+    <div class="tab active" data-tab="register">Register</div>
+    <div class="tab" data-tab="login">Login</div>
+    <div class="tab" data-tab="check-email">Check Email</div>
+  </div>
+  
+  <div class="container">
+    <div class="form-container">
+      <div class="tab-content active" id="register-tab">
+        <h2>Register</h2>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="reg-name">Name</label>
+            <input type="text" id="reg-name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="reg-user-type">User Type</label>
+            <select id="reg-user-type" required>
+              <option value="client">Client</option>
+              <option value="translator">Translator</option>
+            </select>
+          </div>
+          
+          <button type="submit">Register</button>
+          <div id="register-error" class="error"></div>
+          <div id="register-success" class="success"></div>
+        </form>
+      </div>
+      
+      <div class="tab-content" id="login-tab">
+        <h2>Login</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required>
+          </div>
+          
+          <button type="submit">Login</button>
+          <div id="login-error" class="error"></div>
+          <div id="login-success" class="success"></div>
+        </form>
+      </div>
+      
+      <div class="tab-content" id="check-email-tab">
+        <h2>Check Email</h2>
+        <form id="check-email-form">
+          <div class="form-group">
+            <label for="check-email">Email</label>
+            <input type="email" id="check-email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="check-user-type">User Type</label>
+            <select id="check-user-type" required>
+              <option value="client">Client</option>
+              <option value="translator">Translator</option>
+            </select>
+          </div>
+          
+          <button type="submit">Check Email</button>
+          <div id="check-email-error" class="error"></div>
+          <div id="check-email-result" class="success"></div>
+        </form>
+      </div>
+    </div>
+    
+    <div class="result-container">
+      <h2>Result</h2>
+      <pre id="result">No result yet</pre>
+    </div>
+  </div>
+  
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+      });
+    });
+    
+    // API URL - change this to your server URL
+    const API_URL = 'http://localhost:5000/api';
+    
+    // Register form
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+      const userType = document.getElementById('reg-user-type').value;
+      
+      document.getElementById('register-error').textContent = '';
+      document.getElementById('register-success').textContent = '';
+      
+      try {
+        const response = await fetch(`${API_URL}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password, userType })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Registration failed');
+        }
+        
+        document.getElementById('register-success').textContent = 'Registration successful!';
+        document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('register-error').textContent = error.message;
+        document.getElementById('result').textContent = error.message;
+      }
+    });
+    
+    // Login form
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      
+      document.getElementById('login-error').textContent = '';
+      document.getElementById('login-success').textContent = '';
+      
+      try {
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Login failed');
+        }
+        
+        document.getElementById('login-success').textContent = 'Login successful!';
+        document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('login-error').textContent = error.message;
+        document.getElementById('result').textContent = error.message;
+      }
+    });
+    
+    // Check email form
+    document.getElementById('check-email-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('check-email').value;
+      const userType = document.getElementById('check-user-type').value;
+      
+      document.getElementById('check-email-error').textContent = '';
+      document.getElementById('check-email-result').textContent = '';
+      
+      try {
+        const response = await fetch(`${API_URL}/auth/check-email-type`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, userType })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Check email failed');
+        }
+        
+        if (data.exists) {
+          document.getElementById('check-email-result').textContent = `Email exists as a ${userType}`;
+        } else if (data.conflictingType) {
+          document.getElementById('check-email-result').textContent = `Email exists as a ${data.conflictingType}`;
+        } else {
+          document.getElementById('check-email-result').textContent = 'Email is available';
+        }
+        
+        document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('check-email-error').textContent = error.message;
+        document.getElementById('result').textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>

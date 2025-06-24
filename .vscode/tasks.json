@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run LingoLink App",
+			"type": "shell",
+			"command": "cd server && start powershell -NoExit npm start && cd ../client && npm start",
+			"group": "test",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

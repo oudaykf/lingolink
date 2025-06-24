@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    /* Base styles */
+    .document { transition: transform 0.3s ease, filter 0.3s ease; }
+    .center-icon { transition: transform 0.5s ease, filter 0.5s ease; }
+    .connection-line { transition: stroke-dashoffset 2s linear infinite, stroke 0.3s ease; }
+    .icon-element { transition: transform 0.5s ease, opacity 0.5s ease; }
+    
+    /* Interactive animations */
+    .document:hover { transform: translateY(-5px); filter: drop-shadow(0 10px 10px rgba(0,0,0,0.15)); }
+    .center-icon:hover { transform: scale(1.05); filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); }
+    .icon-element:hover { transform: scale(1.1); }
+    
+    /* Continuous animations */
+    @keyframes dash {
+      to { stroke-dashoffset: -20; }
+    }
+    .connection-line {
+      stroke-dasharray: 5 3;
+      animation: dash 2s linear infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    .pulse-animation {
+      animation: pulse 4s ease-in-out infinite;
+    }
+  </style>
+
+  <!-- Definitions for effects -->
+  <defs>
+    <linearGradient id="documentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f0f0f0"/>
+    </linearGradient>
+    
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#40E0D0"/>
+      <stop offset="100%" stop-color="#20B2AA"/>
+    </linearGradient>
+    
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+    
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="600" height="400" fill="#f8f9fa"/>
+  
+  <!-- Main content -->
+  <g transform="translate(300, 200)">
+    <!-- Connection lines -->
+    <path class="connection-line" d="M-50,0 C-80,-30 -120,-30 -150,0" stroke="#30D5C8" stroke-width="2" fill="none"/>
+    <path class="connection-line" d="M50,0 C80,-30 120,-30 150,0" stroke="#30D5C8" stroke-width="2" fill="none" style="animation-delay: -1s"/>
+    
+    <!-- Center translation service - Scales of Justice icon -->
+    <g class="center-icon" filter="url(#shadow)">
+      <circle cx="0" cy="0" r="50" fill="white" stroke="#30D5C8" stroke-width="2"/>
+      
+      <!-- Scales of Justice icon -->
+      <g transform="translate(0, 0)">
+        <!-- Center pole -->
+        <line x1="0" y1="-25" x2="0" y2="15" stroke="#333" stroke-width="2.5"/>
+        
+        <!-- Top crossbar -->
+        <line x1="-25" y1="-25" x2="25" y2="-25" stroke="#333" stroke-width="2.5"/>
+        
+        <!-- Base -->
+        <rect x="-12" y="15" width="24" height="10" rx="2" fill="#333"/>
+        
+        <!-- Left scale -->
+        <g>
+          <line x1="-25" y1="-25" x2="-25" y2="-5" stroke="#333" stroke-width="1.5"/>
+          <circle cx="-25" cy="-5" r="10" fill="none" stroke="#333" stroke-width="1.5"/>
+          <path d="M-30,-8 L-20,-8 M-30,-5 L-20,-5 M-30,-2 L-20,-2" stroke="#333" stroke-width="1"/>
+        </g>
+        
+        <!-- Right scale -->
+        <g>
+          <line x1="25" y1="-25" x2="25" y2="-5" stroke="#333" stroke-width="1.5"/>
+          <circle cx="25" cy="-5" r="10" fill="none" stroke="#333" stroke-width="1.5"/>
+          <path d="M20,-8 L30,-8 M20,-5 L30,-5 M20,-2 L30,-2" stroke="#333" stroke-width="1"/>
+        </g>
+        
+        <!-- Turquoise accent -->
+        <circle cx="0" cy="-25" r="5" fill="#30D5C8"/>
+      </g>
+    </g>
+    
+    <!-- Source document - Legal contract with seal -->
+    <g class="document" transform="translate(-200, 0)" filter="url(#shadow)">
+      <!-- Document container -->
+      <rect x="-50" y="-70" width="100" height="140" rx="5" fill="white" stroke="#ddd" stroke-width="1"/>
+      
+      <!-- Document content -->
+      <rect x="-40" y="-60" width="80" height="120" fill="#f8f9fa" stroke="#eaeaea" stroke-width="0.5"/>
+      
+      <!-- Document header -->
+      <rect x="-40" y="-60" width="80" height="20" fill="#f0f0f0" stroke="#eaeaea" stroke-width="0.5"/>
+      <path d="M-30,-50 L30,-50" stroke="#aaa" stroke-width="1"/>
+      
+      <!-- Legal contract content -->
+      <g transform="translate(0, -20)">
+        <!-- Paragraph sections -->
+        <rect x="-30" y="0" width="60" height="8" rx="1" fill="#ddd"/>
+        <rect x="-30" y="12" width="60" height="8" rx="1" fill="#ddd"/>
+        <rect x="-30" y="24" width="60" height="8" rx="1" fill="#ddd"/>
+        <rect x="-30" y="36" width="60" height="8" rx="1" fill="#ddd"/>
+        <rect x="-30" y="48" width="40" height="8" rx="1" fill="#ddd"/>
+        
+        <!-- Signature line -->
+        <line x1="-30" y1="65" x2="10" y2="65" stroke="#333" stroke-width="1"/>
+        <path d="M-25,65 C-20,60 -15,70 -10,65" stroke="#333" stroke-width="0.75" fill="none"/>
+      </g>
+      
+      <!-- Legal seal -->
+      <g transform="translate(25, 40)">
+        <circle cx="0" cy="0" r="15" fill="none" stroke="url(#goldGradient)" stroke-width="1"/>
+        <circle cx="0" cy="0" r="12" fill="none" stroke="url(#goldGradient)" stroke-width="0.5"/>
+        <path d="M-8,0 A8,8 0 0,1 8,0 A8,8 0 0,1 -8,0 Z" fill="none" stroke="url(#goldGradient)" stroke-width="0.5" transform="rotate(45)"/>
+        <text x="0" y="3" font-family="serif" font-size="6" fill="#DAA520" text-anchor="middle" font-weight="bold">SEAL</text>
+      </g>
+      
+      <!-- Source language indicator -->
+      <g transform="translate(-40, -70)">
+        <rect x="-10" y="-10" width="20" height="20" rx="3" fill="#30D5C8" opacity="0.8"/>
+        <text x="0" y="4" font-family="Arial" font-size="10" fill="white" text-anchor="middle" font-weight="bold">EN</text>
+      </g>
+    </g>
+    
+    <!-- Translated document - With certification and stamp -->
+    <g class="document" transform="translate(200, 0)" filter="url(#shadow)">
+      <!-- Document container -->
+      <rect x="-50" y="-70" width="100" height="140" rx="5" fill="white" stroke="#ddd" stroke-width="1"/>
+      
+      <!-- Document content -->
+      <rect x="-40" y="-60" width="80" height="120" fill="#f8f9fa" stroke="#eaeaea" stroke-width="0.5"/>
+      
+      <!-- Document header -->
+      <rect x="-40" y="-60" width="80" height="20" fill="#f0f0f0" stroke="#eaeaea" stroke-width="0.5"/>
+      <path d="M-30,-50 L30,-50" stroke="#aaa" stroke-width="1"/>
+      
+      <!-- Translated content -->
+      <g transform="translate(0, -20)">
+        <!-- Paragraph sections -->
+        <rect x="-30" y="0" width="60" height="8" rx="1" fill="#ddd"/>
+        <rect x="-30" y="12" width="60" height="8" rx="1" fill="#ddd"/>
+        <rect x="-30" y="24" width="60" height="8" rx="1" fill="#ddd"/>
+        <rect x="-30" y="36" width="60" height="8" rx="1" fill="#ddd"/>
+        <rect x="-30" y="48" width="40" height="8" rx="1" fill="#ddd"/>
+        
+        <!-- Signature line -->
+        <line x1="-30" y1="65" x2="10" y2="65" stroke="#333" stroke-width="1"/>
+        <path d="M-25,65 C-20,60 -15,70 -10,65" stroke="#333" stroke-width="0.75" fill="none"/>
+      </g>
+      
+      <!-- Certification stamp -->
+      <g transform="translate(25, 40)">
+        <rect x="-15" y="-15" width="30" height="30" rx="2" fill="none" stroke="#30D5C8" stroke-width="1"/>
+        <rect x="-12" y="-12" width="24" height="24" rx="1" fill="none" stroke="#30D5C8" stroke-width="0.5"/>
+        <text x="0" y="-2" font-family="Arial" font-size="5" fill="#30D5C8" text-anchor="middle">CERTIFIED</text>
+        <text x="0" y="5" font-family="Arial" font-size="5" fill="#30D5C8" text-anchor="middle">TRANSLATION</text>
+        <path d="M-8,10 L0,15 L8,5" stroke="#30D5C8" stroke-width="1" fill="none"/>
+      </g>
+      
+      <!-- Target language indicator -->
+      <g transform="translate(40, -70)">
+        <rect x="-10" y="-10" width="20" height="20" rx="3" fill="#30D5C8" opacity="0.8"/>
+        <text x="0" y="4" font-family="Arial" font-size="10" fill="white" text-anchor="middle" font-weight="bold">FR</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Professional icon elements -->
+  <!-- Gavel icon -->
+  <g class="icon-element" transform="translate(100, 80)" filter="url(#softShadow)">
+    <circle cx="0" cy="0" r="30" fill="white" stroke="#eaeaea" stroke-width="1"/>
+    <g transform="translate(0, 0) rotate(-30)">
+      <!-- Gavel head -->
+      <rect x="-15" y="-7" width="15" height="14" rx="2" fill="#333"/>
+      <!-- Gavel handle -->
+      <rect x="0" y="-3" width="20" height="6" rx="1" fill="#333"/>
+    </g>
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#30D5C8" stroke-width="1" opacity="0.5"/>
+  </g>
+  
+  <!-- Paragraph/Section icon -->
+  <g class="icon-element" transform="translate(500, 80)" filter="url(#softShadow)">
+    <circle cx="0" cy="0" r="30" fill="white" stroke="#eaeaea" stroke-width="1"/>
+    <g transform="translate(0, 0)">
+      <!-- Section symbol -->
+      <path d="M-5,-10 C-12,-10 -12,0 -5,0 C5,0 5,10 -5,10 M-5,10 C-12,10 -12,0 -5,0 C5,0 5,-10 -5,-10" stroke="#333" stroke-width="1.5" fill="none"/>
+      <line x1="5" y1="-10" x2="5" y2="10" stroke="#333" stroke-width="1.5"/>
+    </g>
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#30D5C8" stroke-width="1" opacity="0.5"/>
+  </g>
+  
+  <!-- Globe/International icon -->
+  <g class="icon-element" transform="translate(100, 320)" filter="url(#softShadow)">
+    <circle cx="0" cy="0" r="30" fill="white" stroke="#eaeaea" stroke-width="1"/>
+    <g transform="translate(0, 0)">
+      <!-- Globe -->
+      <circle cx="0" cy="0" r="15" fill="none" stroke="#333" stroke-width="1.5"/>
+      <!-- Meridians -->
+      <ellipse cx="0" cy="0" rx="15" ry="6" fill="none" stroke="#333" stroke-width="0.75"/>
+      <line x1="-15" y1="0" x2="15" y2="0" stroke="#333" stroke-width="0.75"/>
+      <line x1="0" y1="-15" x2="0" y2="15" stroke="#333" stroke-width="0.75"/>
+    </g>
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#30D5C8" stroke-width="1" opacity="0.5"/>
+  </g>
+  
+  <!-- Certificate/Diploma icon -->
+  <g class="icon-element" transform="translate(500, 320)" filter="url(#softShadow)">
+    <circle cx="0" cy="0" r="30" fill="white" stroke="#eaeaea" stroke-width="1"/>
+    <g transform="translate(0, 0)">
+      <!-- Certificate -->
+      <rect x="-12" y="-15" width="24" height="30" rx="2" fill="none" stroke="#333" stroke-width="1.5"/>
+      <!-- Certificate content lines -->
+      <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#333" stroke-width="0.75"/>
+      <line x1="-8" y1="-5" x2="8" y2="-5" stroke="#333" stroke-width="0.75"/>
+      <line x1="-8" y1="0" x2="8" y2="0" stroke="#333" stroke-width="0.75"/>
+      <line x1="-8" y1="5" x2="8" y2="5" stroke="#333" stroke-width="0.75"/>
+      <!-- Certificate seal -->
+      <circle cx="0" cy="12" r="5" fill="none" stroke="#333" stroke-width="0.75"/>
+      <path d="M-3,12 L3,12 M0,9 L0,15" stroke="#333" stroke-width="0.5"/>
+    </g>
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#30D5C8" stroke-width="1" opacity="0.5"/>
+  </g>
+  
+  <!-- Bottom accent bar -->
+  <rect x="100" y="380" width="400" height="4" rx="2" fill="url(#accentGradient)" opacity="0.5"/>
+</svg>

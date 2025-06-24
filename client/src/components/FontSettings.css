@@ -1,0 +1,51 @@
+.font-settings {
+  margin-top: 16px;
+}
+
+.font-section {
+  margin-bottom: 16px;
+}
+
+.font-section h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.font-size-options,
+.font-family-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.font-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-color);
+}
+
+.font-option:hover {
+  background-color: var(--hover-bg);
+}
+
+.font-option.active {
+  background-color: var(--accent-color-light);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.font-option-name {
+  font-size: 14px;
+}
+
+/* Preview text for font families */
+.font-family-options .font-option {
+  min-width: 120px;
+}

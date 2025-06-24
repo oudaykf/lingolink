@@ -1,0 +1,396 @@
+import React, { useState, useEffect } from 'react';
+import './AuthPage.css';
+
+const AuthPage = ({ onSuccess, currentLanguage, translations, onAuthenticated }) => {
+  console.log('AuthPage rendered', { currentLanguage, translations });
+
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    name: '',
+    userType: 'client'
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
+  const [emailChecking, setEmailChecking] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const t = (key) => translations[currentLanguage][key];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setValidationErrors({});
+
+    // Validate form before submission
+    if (!validateForm()) {
+      return; // Stop if validation fails
+    }
+
+    setLoading(true);
+
+    try {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const endpoint = `${API_URL}/api/auth/${isLogin ? 'login' : 'register'}`;
+
+      // Prepare the request data
+      const requestData = isLogin
+        ? { email: formData.email, password: formData.password }
+        : {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            userType: formData.userType
+          };
+
+      console.log('Sending request to:', endpoint, 'with data:', { ...requestData, password: '[REDACTED]' });
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const contentType = response.headers.get('content-type');
+      let data;
+
+      try {
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          const text = await response.text();
+          console.error('Received non-JSON response:', text);
+          throw new Error('Server returned an invalid response format');
+        }
+      } catch (parseError) {
+        console.error('Error parsing response:', parseError);
+        throw new Error('Invalid server response');
+      }
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Authentication failed');
+      }
+
+      // Save token to localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      // Log successful authentication
+      console.log(`User ${isLogin ? 'logged in' : 'registered'}: ${formData.email}`);
+
+      // Notify parent component about successful authentication
+      if (onAuthenticated) {
+        onAuthenticated(data.user);
+      }
+
+      // Close modal if needed
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (err) {
+      console.error('Authentication error:', err);
+
+      // Show user-friendly error message
+      if (err.message.includes('Failed to fetch') || err.message === 'Failed to fetch') {
+        setError('Could not connect to the server. Please try again later.');
+      } else if (isLogin && err.message.includes('Invalid email or password')) {
+        setError('Invalid email or password. Please try again.');
+      } else if (!isLogin && err.message.includes('already registered as a')) {
+        setError(err.message);
+      } else if (err.message.includes('Error during registration process')) {
+        setError('There was a problem creating your account. Please try again later.');
+      } else {
+        setError(err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Check if email exists when email field changes and we're in signup mode
+  useEffect(() => {
+    const checkEmailExists = async () => {
+      if (!isLogin && formData.email && validateEmail(formData.email)) {
+        setEmailChecking(true);
+        try {
+          // Use the check-email-type endpoint to check if email exists with the specific user type
+          const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+          const response = await fetch(`${API_URL}/api/auth/check-email-type`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: formData.email,
+              userType: formData.userType
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setEmailExists(data.exists);
+
+            if (data.exists) {
+              // Email exists with the same user type
+              setValidationErrors(prev => ({
+                ...prev,
+                email: `This email is already registered as a ${formData.userType}. Please use a different email or sign in.`
+              }));
+            } else if (data.conflictingType) {
+              // Email exists but with a different user type
+              setValidationErrors(prev => ({
+                ...prev,
+                email: `This email is already registered as a ${data.conflictingType}. Please use a different email for ${formData.userType} registration.`
+              }));
+            } else {
+              // Email doesn't exist
+              setValidationErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors.email;
+                return newErrors;
+              });
+            }
+          }
+        } catch (error) {
+          console.error('Error checking email:', error);
+        } finally {
+          setEmailChecking(false);
+        }
+      }
+    };
+
+    // Debounce the email check to avoid too many requests
+    const timeoutId = setTimeout(() => {
+      checkEmailExists();
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [formData.email, formData.userType, isLogin]);
+
+  // Validate email format
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  // Validate password strength
+  const validatePassword = (password) => {
+    return password.length >= 6;
+  };
+
+  // Validate form before submission
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.email) {
+      errors.email = 'Email is required';
+    } else if (!validateEmail(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.password) {
+      errors.password = 'Password is required';
+    } else if (!validatePassword(formData.password)) {
+      errors.password = 'Password must be at least 6 characters long';
+    }
+
+    if (!isLogin) {
+      if (!formData.name) {
+        errors.name = 'Name is required';
+      }
+
+      if (emailExists) {
+        errors.email = 'This email is already registered. Please use a different email.';
+      }
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+
+    // Clear specific field error when user types
+    if (validationErrors[name]) {
+      setValidationErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+
+    // Clear general error
+    if (error) {
+      setError('');
+    }
+  };
+
+  return (
+    <div className="auth-modal">
+      <div className="auth-logo">
+        <img src="/lingolink-logo-new.svg" alt="LingoLink" className="logo" />
+      </div>
+
+      <div className="auth-header">
+        <h2>{isLogin ? t('welcomeBack') : t('createAccount')}</h2>
+        <p className="auth-subtitle">
+          {isLogin
+            ? t('signInSubtitle')
+            : t('signUpSubtitle')}
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="auth-form">
+        {!isLogin && (
+          <div className="form-group">
+            <label htmlFor="name">
+              <span>{t('fullName')}</span>
+            </label>
+            <div className="input-container">
+              <i className="input-icon user-icon"></i>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder={t('fullNamePlaceholder')}
+                className={validationErrors.name ? 'input-error' : ''}
+              />
+            </div>
+            {validationErrors.name && (
+              <div className="field-error">{validationErrors.name}</div>
+            )}
+          </div>
+        )}
+
+        <div className="form-group">
+          <label htmlFor="email">
+            <span>{t('emailAddress')}</span>
+          </label>
+          <div className="input-container">
+            <i className="input-icon email-icon"></i>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder={t('emailPlaceholder')}
+              className={validationErrors.email || emailExists ? 'input-error' : ''}
+            />
+            {emailChecking && <span className="checking-indicator">Checking...</span>}
+          </div>
+          {validationErrors.email && (
+            <div className="field-error">{validationErrors.email}</div>
+          )}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">
+            <span>{t('password')}</span>
+          </label>
+          <div className="input-container">
+            <i className="input-icon password-icon"></i>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder={t('passwordPlaceholder')}
+              className={validationErrors.password ? 'input-error' : ''}
+            />
+          </div>
+          {validationErrors.password && (
+            <div className="field-error">{validationErrors.password}</div>
+          )}
+          {!isLogin && !validationErrors.password && formData.password && formData.password.length < 8 && (
+            <div className="password-strength weak">Password strength: Weak</div>
+          )}
+          {!isLogin && !validationErrors.password && formData.password && formData.password.length >= 8 && (
+            <div className="password-strength strong">Password strength: Strong</div>
+          )}
+        </div>
+
+        {!isLogin && (
+          <div className="form-group">
+            <label htmlFor="userType">
+              <span>{t('iWantTo')}</span>
+            </label>
+            <div className="input-container">
+              <i className="input-icon role-icon"></i>
+              <select
+                id="userType"
+                name="userType"
+                value={formData.userType}
+                onChange={handleChange}
+                className={validationErrors.userType ? 'input-error' : ''}
+              >
+                <option value="client">{t('hireTranslators')}</option>
+                <option value="translator">{t('workAsTranslator')}</option>
+              </select>
+            </div>
+            {validationErrors.userType && (
+              <div className="field-error">{validationErrors.userType}</div>
+            )}
+          </div>
+        )}
+
+        {isLogin && (
+          <div className="form-options">
+            <div className="remember-me">
+              <input type="checkbox" id="remember" />
+              <label htmlFor="remember">{t('rememberMe')}</label>
+            </div>
+            <a href="/forgot-password" className="forgot-link">
+              {t('forgotPassword')}
+            </a>
+          </div>
+        )}
+
+        {error && <div className="auth-error">{error}</div>}
+
+        <button type="submit" className="auth-submit" disabled={loading}>
+          {loading ? (
+            <span className="loading-spinner"></span>
+          ) : (
+            <>
+              {isLogin ? t('signIn') : t('createAccount')}
+              <i className="submit-icon"></i>
+            </>
+          )}
+        </button>
+      </form>
+
+      <div className="auth-switch">
+        <p>
+          {isLogin ? t('dontHaveAccount') : t('alreadyHaveAccount')}
+          <button
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setError('');
+              setValidationErrors({});
+              setEmailExists(false);
+            }}
+            className="switch-mode-btn"
+          >
+            {isLogin ? t('signUp') : t('signIn')}
+          </button>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default AuthPage;

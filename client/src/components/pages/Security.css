@@ -1,0 +1,320 @@
+.security-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 8rem 2rem 4rem;
+  color: white;
+}
+
+.security-hero {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+}
+
+.security-hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #40E0D0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.security-hero p {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.security-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 3rem;
+  margin-bottom: 3rem;
+}
+
+.security-overview {
+  text-align: center;
+  margin-bottom: 4rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 2.5rem;
+}
+
+.security-overview h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.security-overview p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.security-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(32, 178, 170, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(32, 178, 170, 0.1);
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(32, 178, 170, 0.15);
+  border-color: var(--primary);
+}
+
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  border-radius: 16px;
+  color: var(--primary);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 2rem;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #40E0D0;
+}
+
+.feature-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.compliance-section {
+  margin-bottom: 4rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 3rem;
+}
+
+.compliance-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #40E0D0;
+}
+
+.compliance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.compliance-item {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.compliance-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.compliance-item h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.compliance-item p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+.security-practices {
+  margin-bottom: 4rem;
+}
+
+.security-practices h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #40E0D0;
+}
+
+.practices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.practice-item {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.practice-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.practice-item h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #40E0D0;
+}
+
+.practice-item p {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.security-contact {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 2.5rem;
+}
+
+.security-contact h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #40E0D0;
+}
+
+.security-contact > p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.contact-info {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.contact-info p {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #666;
+}
+
+.contact-info p:last-child {
+  margin-bottom: 0;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] .security-page {
+  background: #f8f9fa;
+}
+
+[data-theme="dark"] .security-overview,
+[data-theme="dark"] .feature-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(32, 178, 170, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .compliance-item,
+[data-theme="dark"] .practice-item,
+[data-theme="dark"] .security-contact {
+  background: white;
+  border: 1px solid #e0e0e0;
+}
+
+[data-theme="dark"] .feature-card:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: var(--primary);
+}
+
+[data-theme="dark"] .feature-icon {
+  background: rgba(64, 224, 208, 0.1);
+  color: var(--primary);
+}
+
+[data-theme="dark"] .compliance-item:hover,
+[data-theme="dark"] .practice-item:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .contact-info {
+  background: white;
+  border: 1px solid #e0e0e0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .security-page {
+    padding: 6rem 1rem 2rem;
+  }
+  
+  .security-hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .security-hero p {
+    font-size: 1.1rem;
+  }
+  
+  .security-overview h2,
+  .compliance-section h2,
+  .security-practices h2 {
+    font-size: 2rem;
+  }
+  
+  .security-features {
+    grid-template-columns: 1fr;
+  }
+  
+  .compliance-grid,
+  .practices-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .feature-card,
+  .compliance-item,
+  .practice-item {
+    padding: 1.5rem;
+  }
+}

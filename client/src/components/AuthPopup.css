@@ -1,0 +1,78 @@
+.auth-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.auth-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.auth-popup-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  transform: translateY(30px) scale(0.95);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  /* Remove any potential border or outline */
+  border: none;
+  outline: none;
+}
+
+.auth-popup-overlay.active .auth-popup-container {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.auth-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  border: none;
+  font-size: 18px;
+  color: #4b5563;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.auth-popup-close:hover {
+  background-color: #f3f4f6;
+  transform: scale(1.05);
+}
+
+/* Dark mode styles */
+[data-theme=" dark\] .auth-popup-close {
+ background-color: rgba(30, 41, 59, 0.9);
+ color: #e5e7eb;
+}
+
+[data-theme=\dark\] .auth-popup-close:hover {
+ background-color: #1e293b;
+}
+
+/* Prevent body scrolling when popup is open */
+body.popup-open {
+ overflow: hidden;
+}

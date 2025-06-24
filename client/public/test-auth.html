@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #20B2AA;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .dashboard {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Authentication Test</h1>
+  
+  <div id="auth-form">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Enter your email">
+    </div>
+    
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Enter your password">
+    </div>
+    
+    <button id="login-btn">Login</button>
+    <div id="error-message" class="error"></div>
+  </div>
+  
+  <div id="dashboard" class="dashboard">
+    <h2>Welcome to the Dashboard</h2>
+    <p>You are now logged in!</p>
+    <button id="logout-btn">Logout</button>
+  </div>
+  
+  <script>
+    document.getElementById('login-btn').addEventListener('click', function() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      if (!email || !password) {
+        document.getElementById('error-message').textContent = 'Please enter both email and password';
+        return;
+      }
+      
+      // Simulate successful login
+      setTimeout(function() {
+        // Store user data in localStorage
+        const userData = {
+          id: '12345',
+          name: email.split('@')[0],
+          email: email
+        };
+        
+        localStorage.setItem('token', 'mock-token-' + Math.random().toString(36).substring(2));
+        localStorage.setItem('user', JSON.stringify(userData));
+        
+        // Show dashboard
+        document.getElementById('auth-form').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+      }, 1000);
+    });
+    
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      // Clear localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      
+      // Show login form
+      document.getElementById('auth-form').style.display = 'block';
+      document.getElementById('dashboard').style.display = 'none';
+    });
+    
+    // Check if user is already logged in
+    window.addEventListener('load', function() {
+      const user = localStorage.getItem('user');
+      if (user) {
+        document.getElementById('auth-form').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

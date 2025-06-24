@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definitions for premium gradients and effects -->
+  <defs>
+    <!-- Premium gradients -->
+    <linearGradient id="premiumBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f9fa"/>
+      <stop offset="100%" stop-color="#e9ecef"/>
+    </linearGradient>
+    
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#30D5C8"/>
+      <stop offset="100%" stop-color="#20B2AA"/>
+    </linearGradient>
+    
+    <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    
+    <!-- Premium shadows -->
+    <filter id="premiumShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+    
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+    
+    <!-- Premium patterns -->
+    <pattern id="subtlePattern" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="10" height="10" fill="#f8f9fa"/>
+      <line x1="0" y1="0" x2="10" y2="0" stroke="#f0f0f0" stroke-width="1"/>
+    </pattern>
+  </defs>
+  
+  <!-- Premium background -->
+  <rect width="600" height="400" fill="white"/>
+  <rect width="600" height="400" fill="url(#premiumBg)" opacity="0.7"/>
+  
+  <!-- Subtle premium background elements -->
+  <rect x="0" y="0" width="600" height="10" fill="url(#accentGradient)" opacity="0.1"/>
+  <rect x="0" y="390" width="600" height="10" fill="url(#accentGradient)" opacity="0.1"/>
+  <rect x="20" y="20" width="560" height="360" rx="5" ry="5" fill="none" stroke="#30D5C8" stroke-width="0.5" opacity="0.3"/>
+  
+  <!-- Main content area -->
+  <g transform="translate(300, 200)">
+    <!-- Premium central element -->
+    <g filter="url(#premiumShadow)">
+      <circle cx="0" cy="0" r="45" fill="white"/>
+      <circle cx="0" cy="0" r="43" fill="white" stroke="#30D5C8" stroke-width="1"/>
+      
+      <!-- Premium icon -->
+      <g transform="translate(0, 0)">
+        <path d="M-18,-18 L-18,18 L18,18 L18,-18 Z" fill="none" stroke="#30D5C8" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="-12" y1="0" x2="12" y2="0" stroke="#30D5C8" stroke-width="1.5"/>
+        <line x1="-12" y1="-9" x2="12" y2="-9" stroke="#30D5C8" stroke-width="1"/>
+        <line x1="-12" y1="9" x2="12" y2="9" stroke="#30D5C8" stroke-width="1"/>
+        
+        <!-- Premium accent -->
+        <circle cx="0" cy="0" r="25" fill="none" stroke="#30D5C8" stroke-width="0.5" opacity="0.5"/>
+      </g>
+    </g>
+    
+    <!-- Premium connection lines -->
+    <path d="M-45,0 C-70,-20 -120,-20 -145,0" stroke="#30D5C8" stroke-width="1" fill="none"/>
+    <path d="M45,0 C70,-20 120,-20 145,0" stroke="#30D5C8" stroke-width="1" fill="none"/>
+    
+    <!-- Left side: Source document with premium styling -->
+    <g transform="translate(-190, 0)" filter="url(#premiumShadow)">
+      <rect x="-45" y="-60" width="90" height="120" rx="3" ry="3" fill="white"/>
+      
+      <!-- Premium document styling -->
+      <rect x="-35" y="-50" width="70" height="100" fill="#f8f9fa" stroke="#eaeaea" stroke-width="0.5"/>
+      
+      <!-- Document header -->
+      <rect x="-35" y="-50" width="70" height="15" fill="#f0f0f0" stroke="#eaeaea" stroke-width="0.5"/>
+      <line x1="-25" y1="-42.5" x2="25" y2="-42.5" stroke="#ccc" stroke-width="0.5"/>
+      
+      <!-- Document content -->
+      <line x1="-25" y1="-25" x2="25" y2="-25" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="-15" x2="25" y2="-15" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="-5" x2="25" y2="-5" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="5" x2="25" y2="5" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="15" x2="25" y2="15" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="25" x2="15" y2="25" stroke="#ccc" stroke-width="0.5"/>
+      
+      <!-- Premium legal seal -->
+      <circle cx="20" cy="30" r="10" fill="none" stroke="url(#goldAccent)" stroke-width="0.5"/>
+      <path d="M15,30 L25,30 M20,25 L20,35" stroke="url(#goldAccent)" stroke-width="0.5"/>
+      <circle cx="20" cy="30" r="5" fill="none" stroke="url(#goldAccent)" stroke-width="0.3"/>
+    </g>
+    
+    <!-- Right side: Translated document with premium styling -->
+    <g transform="translate(190, 0)" filter="url(#premiumShadow)">
+      <rect x="-45" y="-60" width="90" height="120" rx="3" ry="3" fill="white"/>
+      
+      <!-- Premium document styling -->
+      <rect x="-35" y="-50" width="70" height="100" fill="#f8f9fa" stroke="#eaeaea" stroke-width="0.5"/>
+      
+      <!-- Document header -->
+      <rect x="-35" y="-50" width="70" height="15" fill="#f0f0f0" stroke="#eaeaea" stroke-width="0.5"/>
+      <line x1="-25" y1="-42.5" x2="25" y2="-42.5" stroke="#ccc" stroke-width="0.5"/>
+      
+      <!-- Document content -->
+      <line x1="-25" y1="-25" x2="25" y2="-25" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="-15" x2="25" y2="-15" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="-5" x2="25" y2="-5" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="5" x2="25" y2="5" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="15" x2="25" y2="15" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="-25" y1="25" x2="15" y2="25" stroke="#ccc" stroke-width="0.5"/>
+      
+      <!-- Premium certification mark -->
+      <g transform="translate(20, 30)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#30D5C8" stroke-width="0.5"/>
+        <path d="M-5,-5 L0,5 L5,-5" fill="none" stroke="#30D5C8" stroke-width="0.5"/>
+        <circle cx="0" cy="0" r="5" fill="none" stroke="#30D5C8" stroke-width="0.3"/>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Premium decorative elements -->
+  <g transform="translate(50, 50)" filter="url(#subtleShadow)">
+    <circle cx="0" cy="0" r="15" fill="white" stroke="#30D5C8" stroke-width="0.5" opacity="0.7"/>
+    <path d="M-5,-5 L5,5 M-5,5 L5,-5" stroke="#30D5C8" stroke-width="0.5"/>
+  </g>
+  
+  <g transform="translate(550, 50)" filter="url(#subtleShadow)">
+    <circle cx="0" cy="0" r="15" fill="white" stroke="#30D5C8" stroke-width="0.5" opacity="0.7"/>
+    <path d="M-5,0 L5,0 M0,-5 L0,5" stroke="#30D5C8" stroke-width="0.5"/>
+  </g>
+  
+  <g transform="translate(50, 350)" filter="url(#subtleShadow)">
+    <circle cx="0" cy="0" r="15" fill="white" stroke="#30D5C8" stroke-width="0.5" opacity="0.7"/>
+    <circle cx="0" cy="0" r="5" fill="none" stroke="#30D5C8" stroke-width="0.5"/>
+  </g>
+  
+  <g transform="translate(550, 350)" filter="url(#subtleShadow)">
+    <circle cx="0" cy="0" r="15" fill="white" stroke="#30D5C8" stroke-width="0.5" opacity="0.7"/>
+    <rect x="-5" y="-5" width="10" height="10" fill="none" stroke="#30D5C8" stroke-width="0.5"/>
+  </g>
+  
+  <!-- Premium horizontal lines -->
+  <line x1="100" y1="50" x2="500" y2="50" stroke="#30D5C8" stroke-width="0.3" opacity="0.3"/>
+  <line x1="100" y1="350" x2="500" y2="350" stroke="#30D5C8" stroke-width="0.3" opacity="0.3"/>
+</svg>

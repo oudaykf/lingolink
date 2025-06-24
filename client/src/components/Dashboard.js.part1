@@ -1,0 +1,764 @@
+import React, { useState, useEffect } from 'react';
+import './Dashboard.css';
+import './Dashboard-modern.css';
+import EditProfile from './EditProfile';
+import Card from './Card';
+import Modal from './Modal';
+import NotificationManager, { notify } from './NotificationManager';
+import OnboardingTutorial from './OnboardingTutorial';
+import ThemeSelector from './ThemeSelector';
+
+// Language translations
+const translations = {
+  en: {
+    dashboard: 'Dashboard',
+    myTranslations: 'My Translations',
+    myWork: 'My Work',
+    newTranslation: 'New Translation',
+    findTranslator: 'Find Translator',
+    priceCalculator: 'Price Calculator',
+    translationRequests: 'Translation Requests',
+    clientMessages: 'Client Messages',
+    settings: 'Settings',
+    welcomeBack: 'Welcome back',
+    clientDescription: 'As a client, you can request translations, track their progress, and manage your translation projects.',
+    translatorDescription: 'As a translator, you can view available translation jobs, submit your work, and track your translation history.',
+    newTranslationRequest: 'New Translation Request',
+    viewTranslationRequests: 'View Translation Requests',
+    yourProfile: 'Your Profile',
+    editProfile: 'Edit Profile',
+    activeRequests: 'Active Requests',
+    completed: 'Completed',
+    totalWords: 'Total Words',
+    availableRequests: 'Available Requests',
+    completedJobs: 'Completed Jobs',
+    earnings: 'Earnings',
+    recentActivity: 'Recent Activity',
+    accountInformation: 'Account Information',
+    name: 'Name',
+    email: 'Email',
+    accountType: 'Account Type',
+    preferences: 'Preferences',
+    appearance: 'Appearance',
+    language: 'Language',
+    theme: 'Theme',
+    notifications: 'Notifications',
+    security: 'Security',
+    lightTheme: 'Light Theme',
+    darkTheme: 'Dark Theme',
+    systemTheme: 'System Theme',
+    emailNotifications: 'Email Notifications',
+    browserNotifications: 'Browser Notifications',
+    saveChanges: 'Save Changes',
+    english: 'English',
+    french: 'French',
+    spanish: 'Spanish',
+    arabic: 'Arabic',
+    german: 'German',
+    personalInformation: 'Personal Information',
+    professionalInformation: 'Professional Information',
+    bio: 'Bio',
+    phone: 'Phone',
+    location: 'Location',
+    languages: 'Languages',
+    specializations: 'Specializations',
+    cancel: 'Cancel',
+    saving: 'Saving...',
+    clickToUpload: 'Click to upload profile image',
+    recommendedSize: 'Recommended size: 300x300 pixels',
+    appearance: 'Appearance',
+    chooseTheme: 'Choose Theme',
+    accentColor: 'Accent Color',
+    lightTheme: 'Light Theme',
+    darkTheme: 'Dark Theme',
+    systemTheme: 'System Theme',
+    turquoise: 'Turquoise',
+    blue: 'Blue',
+    purple: 'Purple',
+    pink: 'Pink',
+    red: 'Red',
+    orange: 'Orange',
+    yellow: 'Yellow',
+    green: 'Green',
+    welcomeToLingoLink: 'Welcome to LingoLink',
+    clientWelcomeMessage: 'Your gateway to professional legal document translation services.',
+    findTranslators: 'Find Translators',
+    clientFindTranslatorsMessage: 'Browse our network of professional translators specializing in legal documents.',
+    manageRequests: 'Manage Requests',
+    clientManageRequestsMessage: 'Track and manage your translation requests from submission to completion.',
+    communicateEffectively: 'Communicate Effectively',
+    clientCommunicateMessage: 'Direct messaging with your translator ensures clear communication throughout the process.',
+    customizeYourExperience: 'Customize Your Experience',
+    clientCustomizeMessage: 'Personalize your dashboard, set preferences, and choose your theme.',
+    translatorWelcomeMessage: 'Welcome to your professional translation workspace.',
+    findJobs: 'Find Jobs',
+    translatorFindJobsMessage: 'Browse available translation requests that match your expertise.',
+    manageTranslations: 'Manage Translations',
+    translatorManageMessage: 'Track your active and completed translation projects in one place.',
+    communicateWithClients: 'Communicate With Clients',
+    translatorCommunicateMessage: 'Direct messaging with clients ensures clear communication throughout the process.',
+    customizeYourProfile: 'Customize Your Profile',
+    translatorCustomizeMessage: 'Showcase your expertise, languages, and specializations to attract more clients.',
+    previous: 'Previous',
+    next: 'Next',
+    skipTutorial: 'Skip Tutorial',
+    getStarted: 'Get Started',
+    personalization: 'Personalization',
+    client: 'Client',
+    translator: 'Translator',
+    logout: 'Logout',
+    advancedAppearanceSettings: 'Advanced Appearance Settings',
+    done: 'Done',
+    themeChanged: 'Theme changed successfully',
+    tutorialCompleted: 'Tutorial completed'
+  },
+  fr: {
+    dashboard: 'Tableau de bord',
+    myTranslations: 'Mes traductions',
+    myWork: 'Mon travail',
+    newTranslation: 'Nouvelle traduction',
+    findTranslator: 'Trouver un traducteur',
+    priceCalculator: 'Calculateur de prix',
+    translationRequests: 'Demandes de traduction',
+    clientMessages: 'Messages clients',
+    settings: 'ParamÃ¨tres',
+    welcomeBack: 'Bon retour',
+    clientDescription: 'En tant que client, vous pouvez demander des traductions, suivre leur progression et gÃ©rer vos projets de traduction.',
+    translatorDescription: 'En tant que traducteur, vous pouvez consulter les travaux de traduction disponibles, soumettre votre travail et suivre votre historique de traduction.',
+    newTranslationRequest: 'Nouvelle demande de traduction',
+    viewTranslationRequests: 'Voir les demandes de traduction',
+    yourProfile: 'Votre profil',
+    editProfile: 'Modifier le profil',
+    activeRequests: 'Demandes actives',
+    completed: 'TerminÃ©',
+    totalWords: 'Total des mots',
+    availableRequests: 'Demandes disponibles',
+    completedJobs: 'Travaux terminÃ©s',
+    earnings: 'Gains',
+    recentActivity: 'ActivitÃ© rÃ©cente',
+    accountInformation: 'Informations du compte',
+    name: 'Nom',
+    email: 'Email',
+    accountType: 'Type de compte',
+    preferences: 'PrÃ©fÃ©rences',
+    appearance: 'Apparence',
+    language: 'Langue',
+    theme: 'ThÃ¨me',
+    notifications: 'Notifications',
+    security: 'SÃ©curitÃ©',
+    lightTheme: 'ThÃ¨me clair',
+    darkTheme: 'ThÃ¨me sombre',
+    systemTheme: 'ThÃ¨me systÃ¨me',
+    emailNotifications: 'Notifications par email',
+    browserNotifications: 'Notifications du navigateur',
+    saveChanges: 'Enregistrer les modifications',
+    english: 'Anglais',
+    french: 'FranÃ§ais',
+    spanish: 'Espagnol',
+    arabic: 'Arabe',
+    german: 'Allemand',
+    personalInformation: 'Informations personnelles',
+    professionalInformation: 'Informations professionnelles',
+    bio: 'Biographie',
+    phone: 'TÃ©lÃ©phone',
+    location: 'Emplacement',
+    languages: 'Langues',
+    specializations: 'SpÃ©cialisations',
+    cancel: 'Annuler',
+    saving: 'Enregistrement...',
+    clickToUpload: 'Cliquez pour tÃ©lÃ©charger une image de profil',
+    recommendedSize: 'Taille recommandÃ©e: 300x300 pixels',
+    personalization: 'Personnalisation',
+    client: 'Client',
+    translator: 'Traducteur',
+    logout: 'DÃ©connexion'
+  },
+  es: {
+    dashboard: 'Panel de control',
+    myTranslations: 'Mis traducciones',
+    myWork: 'Mi trabajo',
+    newTranslation: 'Nueva traducciÃ³n',
+    findTranslator: 'Encontrar traductor',
+    priceCalculator: 'Calculadora de precios',
+    translationRequests: 'Solicitudes de traducciÃ³n',
+    clientMessages: 'Mensajes de clientes',
+    settings: 'ConfiguraciÃ³n',
+    welcomeBack: 'Bienvenido de nuevo',
+    clientDescription: 'Como cliente, puede solicitar traducciones, seguir su progreso y gestionar sus proyectos de traducciÃ³n.',
+    translatorDescription: 'Como traductor, puede ver los trabajos de traducciÃ³n disponibles, enviar su trabajo y seguir su historial de traducciÃ³n.',
+    newTranslationRequest: 'Nueva solicitud de traducciÃ³n',
+    viewTranslationRequests: 'Ver solicitudes de traducciÃ³n',
+    yourProfile: 'Tu perfil',
+    editProfile: 'Editar perfil',
+    activeRequests: 'Solicitudes activas',
+    completed: 'Completado',
+    totalWords: 'Total de palabras',
+    availableRequests: 'Solicitudes disponibles',
+    completedJobs: 'Trabajos completados',
+    earnings: 'Ganancias',
+    recentActivity: 'Actividad reciente',
+    accountInformation: 'InformaciÃ³n de la cuenta',
+    name: 'Nombre',
+    email: 'Correo electrÃ³nico',
+    accountType: 'Tipo de cuenta',
+    preferences: 'Preferencias',
+    appearance: 'Apariencia',
+    language: 'Idioma',
+    theme: 'Tema',
+    notifications: 'Notificaciones',
+    security: 'Seguridad',
+    lightTheme: 'Tema claro',
+    darkTheme: 'Tema oscuro',
+    systemTheme: 'Tema del sistema',
+    emailNotifications: 'Notificaciones por correo electrÃ³nico',
+    browserNotifications: 'Notificaciones del navegador',
+    saveChanges: 'Guardar cambios',
+    english: 'InglÃ©s',
+    french: 'FrancÃ©s',
+    spanish: 'EspaÃ±ol',
+    arabic: 'Ãrabe',
+    german: 'AlemÃ¡n',
+    personalization: 'PersonalizaciÃ³n',
+    client: 'Cliente',
+    translator: 'Traductor',
+    logout: 'Cerrar sesiÃ³n'
+  },
+  ar: {
+    dashboard: 'Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…',
+    myTranslations: 'ØªØ±Ø¬Ù…Ø§ØªÙŠ',
+    myWork: 'Ø¹Ù…Ù„ÙŠ',
+    newTranslation: 'ØªØ±Ø¬Ù…Ø© Ø¬Ø¯ÙŠØ¯Ø©',
+    findTranslator: 'Ø§Ù„Ø¨Ø­Ø« Ø¹Ù† Ù…ØªØ±Ø¬Ù…',
+    priceCalculator: 'Ø­Ø§Ø³Ø¨Ø© Ø§Ù„Ø£Ø³Ø¹Ø§Ø±',
+    translationRequests: 'Ø·Ù„Ø¨Ø§Øª Ø§Ù„ØªØ±Ø¬Ù…Ø©',
+    clientMessages: 'Ø±Ø³Ø§Ø¦Ù„ Ø§Ù„Ø¹Ù…Ù„Ø§Ø¡',
+    settings: 'Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª',
+    welcomeBack: 'Ù…Ø±Ø­Ø¨Ù‹Ø§ Ø¨Ø¹ÙˆØ¯ØªÙƒ',
+    clientDescription: 'ÙƒØ¹Ù…ÙŠÙ„ØŒ ÙŠÙ…ÙƒÙ†Ùƒ Ø·Ù„Ø¨ Ø§Ù„ØªØ±Ø¬Ù…Ø§Øª ÙˆØªØªØ¨Ø¹ ØªÙ‚Ø¯Ù…Ù‡Ø§ ÙˆØ¥Ø¯Ø§Ø±Ø© Ù…Ø´Ø§Ø±ÙŠØ¹ Ø§Ù„ØªØ±Ø¬Ù…Ø© Ø§Ù„Ø®Ø§ØµØ© Ø¨Ùƒ.',
+    translatorDescription: 'ÙƒÙ…ØªØ±Ø¬Ù…ØŒ ÙŠÙ…ÙƒÙ†Ùƒ Ø¹Ø±Ø¶ ÙˆØ¸Ø§Ø¦Ù Ø§Ù„ØªØ±Ø¬Ù…Ø© Ø§Ù„Ù…ØªØ§Ø­Ø© ÙˆØªÙ‚Ø¯ÙŠÙ… Ø¹Ù…Ù„Ùƒ ÙˆØªØªØ¨Ø¹ ØªØ§Ø±ÙŠØ® Ø§Ù„ØªØ±Ø¬Ù…Ø© Ø§Ù„Ø®Ø§Øµ Ø¨Ùƒ.',
+    newTranslationRequest: 'Ø·Ù„Ø¨ ØªØ±Ø¬Ù…Ø© Ø¬Ø¯ÙŠØ¯',
+    viewTranslationRequests: 'Ø¹Ø±Ø¶ Ø·Ù„Ø¨Ø§Øª Ø§Ù„ØªØ±Ø¬Ù…Ø©',
+    yourProfile: 'Ù…Ù„ÙÙƒ Ø§Ù„Ø´Ø®ØµÙŠ',
+    editProfile: 'ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ',
+    activeRequests: 'Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù†Ø´Ø·Ø©',
+    completed: 'Ù…ÙƒØªÙ…Ù„',
+    totalWords: 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ„Ù…Ø§Øª',
+    availableRequests: 'Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø©',
+    completedJobs: 'Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…ÙƒØªÙ…Ù„Ø©',
+    earnings: 'Ø§Ù„Ø£Ø±Ø¨Ø§Ø­',
+    recentActivity: 'Ø§Ù„Ù†Ø´Ø§Ø· Ø§Ù„Ø£Ø®ÙŠØ±',
+    accountInformation: 'Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨',
+    name: 'Ø§Ù„Ø§Ø³Ù…',
+    email: 'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ',
+    accountType: 'Ù†ÙˆØ¹ Ø§Ù„Ø­Ø³Ø§Ø¨',
+    preferences: 'Ø§Ù„ØªÙØ¶ÙŠÙ„Ø§Øª',
+    appearance: 'Ø§Ù„Ù…Ø¸Ù‡Ø±',
+    language: 'Ø§Ù„Ù„ØºØ©',
+    theme: 'Ø§Ù„Ø³Ù…Ø©',
+    notifications: 'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª',
+    security: 'Ø§Ù„Ø£Ù…Ø§Ù†',
+    lightTheme: 'Ø§Ù„Ø³Ù…Ø© Ø§Ù„ÙØ§ØªØ­Ø©',
+    darkTheme: 'Ø§Ù„Ø³Ù…Ø© Ø§Ù„Ø¯Ø§ÙƒÙ†Ø©',
+    systemTheme: 'Ø³Ù…Ø© Ø§Ù„Ù†Ø¸Ø§Ù…',
+    emailNotifications: 'Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ',
+    browserNotifications: 'Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ø§Ù„Ù…ØªØµÙØ­',
+    saveChanges: 'Ø­ÙØ¸ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª',
+    english: 'Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©',
+    french: 'Ø§Ù„ÙØ±Ù†Ø³ÙŠØ©',
+    spanish: 'Ø§Ù„Ø¥Ø³Ø¨Ø§Ù†ÙŠØ©',
+    arabic: 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©',
+    german: 'Ø§Ù„Ø£Ù„Ù…Ø§Ù†ÙŠØ©',
+    personalization: 'Ø§Ù„ØªØ®ØµÙŠØµ',
+    client: 'Ø¹Ù…ÙŠÙ„',
+    translator: 'Ù…ØªØ±Ø¬Ù…',
+    logout: 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬'
+  }
+};
+
+// SVG Icons for the dashboard
+const DocumentIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+    <polyline points="14 2 14 8 20 8"></polyline>
+    <line x1="16" y1="13" x2="8" y2="13"></line>
+    <line x1="16" y1="17" x2="8" y2="17"></line>
+    <polyline points="10 9 9 9 8 9"></polyline>
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+);
+
+const WordsIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+  </svg>
+);
+
+const PlusIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19"></line>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+  </svg>
+);
+
+const ActivityIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+  </svg>
+);
+
+const Dashboard = ({ user, onLogout }) => {
+  console.log('Dashboard component rendering with user:', user);
+  const [activeView, setActiveView] = useState('dashboard');
+  console.log('Active view:', activeView);
+  const [translationItems, setTranslationItems] = useState([]);
+  const [stats, setStats] = useState({
+    active: 0,
+    completed: 0,
+    totalWords: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [newTranslation, setNewTranslation] = useState({
+    sourceLanguage: 'en',
+    targetLanguage: 'fr',
+    originalText: ''
+  });
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [profileUpdateSuccess, setProfileUpdateSuccess] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+  // Language and theme settings
+  const [currentLanguage, setCurrentLanguage] = useState(() => {
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    return savedLanguage || 'en';
+  });
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark';
+  });
+
+  // Translation function with safety checks
+  const t = (key) => {
+    try {
+      // First check if the language exists in translations
+      if (translations[currentLanguage]) {
+        // Then check if the key exists in that language
+        if (translations[currentLanguage][key]) {
+          return translations[currentLanguage][key];
+        }
+      }
+
+      // Fallback to English
+      if (translations['en'] && translations['en'][key]) {
+        return translations['en'][key];
+      }
+
+      // If all else fails, return the key itself
+      console.warn(`Translation missing for key: ${key} in language: ${currentLanguage}`);
+      return key;
+    } catch (error) {
+      console.error(`Error in translation function for key: ${key}`, error);
+      return key;
+    }
+  };
+
+  // Mock translations data for testing
+  useEffect(() => {
+    console.log('Setting up mock data');
+    setLoading(true);
+
+    // Mock data
+    const mockTranslations = [
+      {
+        id: '1',
+        sourceLanguage: 'en',
+        targetLanguage: 'fr',
+        originalText: 'This is a sample text for translation testing.',
+        translatedText: 'Ceci est un exemple de texte pour tester la traduction.',
+        status: 'completed',
+        wordCount: 10,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '2',
+        sourceLanguage: 'en',
+        targetLanguage: 'es',
+        originalText: 'Another example text that needs to be translated.',
+        translatedText: null,
+        status: 'pending',
+        wordCount: 8,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+    ];
+
+    // Set mock data
+    setTranslationItems(mockTranslations);
+
+    // Calculate stats
+    const active = mockTranslations.filter(t => t.status !== 'completed').length;
+    const completed = mockTranslations.filter(t => t.status === 'completed').length;
+    const totalWords = mockTranslations.reduce((sum, t) => sum + (t.wordCount || 0), 0);
+
+    setStats({ active, completed, totalWords });
+    setLoading(false);
+
+    // Apply theme
+    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+
+    // Apply language direction
+    if (currentLanguage === 'ar') {
+      document.documentElement.setAttribute('dir', 'rtl');
+    } else {
+      document.documentElement.setAttribute('dir', 'ltr');
+    }
+
+    // Check if tutorial should be shown (first login)
+    const tutorialCompleted = localStorage.getItem('tutorialCompleted');
+    if (!tutorialCompleted) {
+      setShowTutorial(true);
+    }
+  }, [isDarkMode, currentLanguage]);
+
+  const handleCreateTranslation = (e) => {
+    e.preventDefault();
+    console.log('Creating mock translation');
+
+    if (!newTranslation.originalText.trim()) {
+      setError('Please enter text to translate');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    // Create a mock translation
+    const mockTranslation = {
+      id: Date.now().toString(),
+      ...newTranslation,
+      translatedText: null,
+      status: 'pending',
+      wordCount: newTranslation.originalText.split(/\s+/).length,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    // Add to translations
+    setTranslationItems([mockTranslation, ...translationItems]);
+
+    // Update stats
+    setStats(prev => ({
+      active: prev.active + 1,
+      completed: prev.completed,
+      totalWords: prev.totalWords + mockTranslation.wordCount
+    }));
+
+    // Reset form
+    setNewTranslation({
+      sourceLanguage: 'en',
+      targetLanguage: 'fr',
+      originalText: ''
+    });
+
+    // Switch back to dashboard view
+    setActiveView('dashboard');
+    setLoading(false);
+  };
+
+  // Handle theme toggle
+  const toggleTheme = () => {
+    const newThemeValue = !isDarkMode;
+    setIsDarkMode(newThemeValue);
+    localStorage.setItem('theme', newThemeValue ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', newThemeValue ? 'dark' : 'light');
+  };
+
+  // Handle language change
+  const changeLanguage = (langCode) => {
+    setCurrentLanguage(langCode);
+    localStorage.setItem('preferredLanguage', langCode);
+
+    // Set RTL for Arabic
+    if (langCode === 'ar') {
+      document.documentElement.setAttribute('dir', 'rtl');
+    } else {
+      document.documentElement.setAttribute('dir', 'ltr');
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewTranslation(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSaveProfile = async (formData) => {
+    try {
+      // In a real application, you would send this data to your API
+      console.log('Saving profile data:', formData);
+
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Update the user object in localStorage
+      const updatedUser = {
+        ...user,
+        name: formData.get('name'),
+        email: formData.get('email'),
+        bio: formData.get('bio'),
+        phone: formData.get('phone'),
+        location: formData.get('location'),
+        languages: JSON.parse(formData.get('languages')),
+        specializations: JSON.parse(formData.get('specializations'))
+      };
+
+      // If there's a profile image, we'd normally upload it and get a URL back
+      // For now, we'll just simulate this with a placeholder
+      if (formData.get('profileImage')) {
+        // In a real app, this would be the URL returned from your API after upload
+        updatedUser.profileImage = URL.createObjectURL(formData.get('profileImage'));
+      }
+
+      // Update localStorage
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+
+      // Update the user in the parent component
+      // This would typically be handled by the parent component
+      // but for this example, we'll just update the local state
+
+      // Show success message
+      setProfileUpdateSuccess(true);
+      setTimeout(() => setProfileUpdateSuccess(false), 3000);
+
+      // Exit edit mode
+      setIsEditingProfile(false);
+
+      // Return to profile view
+      setActiveView('profile');
+
+      return true;
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      return false;
+    }
+  };
+
+  const handleCancelEditProfile = () => {
+    setIsEditingProfile(false);
+  };
+
+  const handleThemeChange = (newTheme) => {
+    setTheme(newTheme);
+    notify(t('themeChanged'), 'success', 3000);
+  };
+
+  const handleTutorialComplete = () => {
+    setShowTutorial(false);
+    localStorage.setItem('tutorialCompleted', 'true');
+    notify(t('tutorialCompleted'), 'success', 3000);
+  };
+
+  const openSettingsModal = () => {
+    setShowSettingsModal(true);
+  };
+
+  const closeSettingsModal = () => {
+    setShowSettingsModal(false);
+  };
+
+  // Define additional icons for new features
+  const SearchIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  );
+
+  const CalculatorIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+      <line x1="8" y1="6" x2="16" y2="6"></line>
+      <line x1="8" y1="10" x2="16" y2="10"></line>
+      <line x1="8" y1="14" x2="16" y2="14"></line>
+      <line x1="8" y1="18" x2="16" y2="18"></line>
+    </svg>
+  );
+
+  const RequestsIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+      <path d="M9 14l2 2 4-4"></path>
+    </svg>
+  );
+
+  const MessagesIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  );
+
+  const ProfileIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+  );
+
+  // Log the user object to check its structure
+  console.log('User object:', user);
+
+  // Add safety check for user object
+  if (!user) {
+    console.error('User object is undefined or null');
+    // You could redirect to login or show an error message here
+    return (
+      <div className="error-container">
+        <h2>Error: User information not available</h2>
+        <p>Please try logging in again.</p>
+        <button onClick={() => window.location.href = '/login'}>Go to Login</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dashboard-container">
+      {/* Notification Manager */}
+      <NotificationManager />
+
+      {/* Onboarding Tutorial */}
+      {showTutorial && (
+        <OnboardingTutorial
+          isOpen={showTutorial}
+          userType={user?.userType || 'client'}
+          onComplete={handleTutorialComplete}
+          translations={translations}
+          currentLanguage={currentLanguage}
+        />
+      )}
+
+      {/* Settings Modal */}
+      <Modal
+        isOpen={showSettingsModal}
+        onClose={closeSettingsModal}
+        title={t('personalization')}
+        size="medium"
+        footer={
+          <button className="btn-primary" onClick={closeSettingsModal}>
+            {t('done')}
+          </button>
+        }
+      >
+        <div className="settings-content">
+          <div className="settings-section">
+            <h3>{t('appearance')}</h3>
+            <ThemeSelector
+              onThemeChange={handleThemeChange}
+              translations={translations}
+              currentLanguage={currentLanguage}
+            />
+          </div>
+        </div>
+      </Modal>
+
+      <header className="dashboard-header">
+        <div className="dashboard-logo">
+          <img src="/new-main-logo.svg" alt="LingoLink" className="logo" onError={(e) => { console.error('Logo failed to load'); e.target.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0zIDlsMy04IDMgOEwzIDIzbDgtM3oiPjwvcGF0aD48cGF0aCBkPSJNMTMgMTVsNi02Ij48L3BhdGg+PHBhdGggZD0iTTE5IDlsLTYgNiI+PC9wYXRoPjwvc3ZnPg=='; }} />
+          <h1>LingoLink</h1>
+        </div>
+        <div className="dashboard-user">
+          <span>{t('welcomeBack')}, {user.name}</span>
+          <div className="user-type-badge">{user.userType === 'client' ? t('client') : t('translator')}</div>
+
+          <div className="dashboard-controls">
+            <div className="language-dropdown">
+              <button className="language-dropdown-btn">
+                {currentLanguage === 'en' && 'ðŸ‡ºðŸ‡¸'}
+                {currentLanguage === 'fr' && 'ðŸ‡«ðŸ‡·'}
+                {currentLanguage === 'es' && 'ðŸ‡ªðŸ‡¸'}
+                {currentLanguage === 'ar' && 'ðŸ‡¸ðŸ‡¦'}
+              </button>
+              <div className="language-dropdown-content">
+                <button
+                  className={`language-item ${currentLanguage === 'en' ? 'active' : ''}`}
+                  onClick={() => changeLanguage('en')}
+                >
+                  <span>ðŸ‡ºðŸ‡¸</span> {t('english')}
+                </button>
+                <button
+                  className={`language-item ${currentLanguage === 'fr' ? 'active' : ''}`}
+                  onClick={() => changeLanguage('fr')}
+                >
+                  <span>ðŸ‡«ðŸ‡·</span> {t('french')}
+                </button>
+                <button
+                  className={`language-item ${currentLanguage === 'es' ? 'active' : ''}`}
+                  onClick={() => changeLanguage('es')}
+                >
+                  <span>ðŸ‡ªðŸ‡¸</span> {t('spanish')}
+                </button>
+                <button
+                  className={`language-item ${currentLanguage === 'ar' ? 'active' : ''}`}
+                  onClick={() => changeLanguage('ar')}
+                >
+                  <span>ðŸ‡¸ðŸ‡¦</span> {t('arabic')}
+                </button>
+              </div>
+            </div>
+
+            <button className="theme-toggle" onClick={toggleTheme}>
+              {isDarkMode ? 'â˜€ï¸' : 'ðŸŒ™'}
+            </button>
+          </div>
+
+          <button onClick={onLogout} className="logout-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            {t('logout') || 'Logout'}
+          </button>
+        </div>
+      </header>
+
+      <div className="dashboard-content">
+        <div className="dashboard-sidebar">
+          <nav className="dashboard-nav">
+            <ul>
+              <li
+                className={activeView === 'dashboard' ? 'active' : ''}
+                onClick={() => setActiveView('dashboard')}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="9"></rect>
+                  <rect x="14" y="3" width="7" height="5"></rect>
+                  <rect x="14" y="12" width="7" height="9"></rect>
+                  <rect x="3" y="16" width="7" height="5"></rect>
+                </svg>
+                <span>{t('dashboard')}</span>
+              </li>
+
+              {/* Common menu items for both user types */}
+              <li
+                className={activeView === 'translations' ? 'active' : ''}
+                onClick={() => setActiveView('translations')}
+              >
+                <DocumentIcon />
+                <span>{user.userType === 'client' ? t('myTranslations') : t('myWork')}</span>
+              </li>
+
+              {/* Client-specific menu items */}
+              {user.userType === 'client' && (
+                <>

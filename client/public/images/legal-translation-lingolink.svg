@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    /* Base styles */
+    .document { transition: transform 0.3s ease, filter 0.3s ease; }
+    .center-element { transition: transform 0.5s ease, filter 0.5s ease; }
+    .connection-line { transition: stroke-dashoffset 2s linear infinite, stroke 0.3s ease; }
+    
+    /* Interactive animations */
+    .document:hover { transform: translateY(-5px); filter: drop-shadow(0 10px 10px rgba(0,0,0,0.15)); }
+    .center-element:hover { transform: scale(1.05); filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); }
+    
+    /* Continuous animations */
+    @keyframes dash {
+      to { stroke-dashoffset: -20; }
+    }
+    .connection-line {
+      stroke-dasharray: 5 3;
+      animation: dash 2s linear infinite;
+    }
+  </style>
+
+  <!-- Definitions for effects -->
+  <defs>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#40E0D0"/>
+      <stop offset="100%" stop-color="#20B2AA"/>
+    </linearGradient>
+    
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <!-- Clean white background -->
+  <rect width="600" height="400" fill="white"/>
+  
+  <!-- Main content -->
+  <g transform="translate(300, 200)">
+    <!-- Simple connection lines -->
+    <path class="connection-line" d="M-50,0 L-150,0" stroke="#30D5C8" stroke-width="2" fill="none"/>
+    <path class="connection-line" d="M50,0 L150,0" stroke="#30D5C8" stroke-width="2" fill="none" style="animation-delay: -1s"/>
+    
+    <!-- Center element - LingoLink name only -->
+    <g class="center-element" filter="url(#shadow)">
+      <!-- Main circle -->
+      <circle cx="0" cy="0" r="50" fill="white" stroke="#30D5C8" stroke-width="2"/>
+      
+      <!-- LingoLink name only -->
+      <text x="0" y="5" font-family="Arial" font-size="14" font-weight="bold" fill="#30D5C8" text-anchor="middle">LINGOLINK</text>
+    </g>
+    
+    <!-- Source document - Client -->
+    <g class="document" transform="translate(-200, 0)" filter="url(#shadow)">
+      <!-- Document container -->
+      <rect x="-40" y="-60" width="80" height="120" rx="3" fill="white" stroke="#eaeaea" stroke-width="1"/>
+      
+      <!-- Document content -->
+      <g transform="translate(0, -30)">
+        <!-- Title -->
+        <rect x="-30" y="0" width="60" height="6" rx="1" fill="#30D5C8" opacity="0.2"/>
+        
+        <!-- Content lines -->
+        <rect x="-30" y="15" width="60" height="4" rx="1" fill="#eaeaea"/>
+        <rect x="-30" y="25" width="60" height="4" rx="1" fill="#eaeaea"/>
+        <rect x="-30" y="35" width="60" height="4" rx="1" fill="#eaeaea"/>
+        <rect x="-30" y="45" width="60" height="4" rx="1" fill="#eaeaea"/>
+        <rect x="-30" y="55" width="40" height="4" rx="1" fill="#eaeaea"/>
+        
+        <!-- Source language indicator -->
+        <rect x="-30" y="-15" width="20" height="8" rx="2" fill="#30D5C8" opacity="0.8"/>
+        <text x="-20" y="-10" font-family="Arial" font-size="6" fill="white" text-anchor="middle">EN</text>
+      </g>
+      
+      <!-- Client label -->
+      <text x="0" y="75" font-family="Arial" font-size="10" fill="#666" text-anchor="middle">CLIENT</text>
+    </g>
+    
+    <!-- Translated document - Translator -->
+    <g class="document" transform="translate(200, 0)" filter="url(#shadow)">
+      <!-- Document container -->
+      <rect x="-40" y="-60" width="80" height="120" rx="3" fill="white" stroke="#eaeaea" stroke-width="1"/>
+      
+      <!-- Document content -->
+      <g transform="translate(0, -30)">
+        <!-- Title -->
+        <rect x="-30" y="0" width="60" height="6" rx="1" fill="#30D5C8" opacity="0.2"/>
+        
+        <!-- Content lines -->
+        <rect x="-30" y="15" width="60" height="4" rx="1" fill="#eaeaea"/>
+        <rect x="-30" y="25" width="60" height="4" rx="1" fill="#eaeaea"/>
+        <rect x="-30" y="35" width="60" height="4" rx="1" fill="#eaeaea"/>
+        <rect x="-30" y="45" width="60" height="4" rx="1" fill="#eaeaea"/>
+        <rect x="-30" y="55" width="40" height="4" rx="1" fill="#eaeaea"/>
+        
+        <!-- Target language indicator -->
+        <rect x="-30" y="-15" width="20" height="8" rx="2" fill="#30D5C8" opacity="0.8"/>
+        <text x="-20" y="-10" font-family="Arial" font-size="6" fill="white" text-anchor="middle">FR</text>
+      </g>
+      
+      <!-- Translator label -->
+      <text x="0" y="75" font-family="Arial" font-size="10" fill="#666" text-anchor="middle">TRANSLATOR</text>
+    </g>
+  </g>
+  
+  <!-- Minimal bottom accent -->
+  <rect x="150" y="380" width="300" height="2" rx="1" fill="#30D5C8" opacity="0.3"/>
+</svg>

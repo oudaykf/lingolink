@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#30D5C8" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#30D5C8" stop-opacity="0.6"/>
+    </linearGradient>
+    
+    <!-- 3D effect shadows -->
+    <filter id="shadow1" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="8" dy="8" stdDeviation="5" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="4" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.2"/>
+    </filter>
+    
+    <linearGradient id="deviceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f0f0f0"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Main background -->
+  <rect width="800" height="500" fill="#f8f9fa" rx="15" ry="15"/>
+  
+  <!-- Decorative background elements -->
+  <circle cx="700" cy="100" r="150" fill="url(#bgGradient)" opacity="0.5"/>
+  <circle cx="100" cy="400" r="120" fill="url(#bgGradient)" opacity="0.5"/>
+  
+  <!-- Left device - Smartphone -->
+  <g transform="translate(200, 250)" filter="url(#shadow1)">
+    <!-- Phone body -->
+    <rect x="-70" y="-140" width="140" height="280" rx="20" ry="20" fill="url(#deviceGradient)" stroke="#ddd" stroke-width="2"/>
+    
+    <!-- Phone screen -->
+    <rect x="-60" y="-130" width="120" height="260" rx="10" ry="10" fill="#fff" stroke="#eee" stroke-width="1"/>
+    
+    <!-- Phone content - Translation interface -->
+    <rect x="-50" y="-120" width="100" height="40" rx="5" ry="5" fill="#30D5C8" opacity="0.8"/>
+    <text x="0" y="-95" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Translate</text>
+    
+    <!-- Source text -->
+    <rect x="-50" y="-70" width="100" height="60" rx="5" ry="5" fill="#f0f0f0"/>
+    <text x="0" y="-40" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">Hello, how are you?</text>
+    
+    <!-- Language selector -->
+    <rect x="-50" y="0" width="45" height="25" rx="5" ry="5" fill="#e0e0e0"/>
+    <text x="-27" y="15" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">EN</text>
+    
+    <rect x="5" y="0" width="45" height="25" rx="5" ry="5" fill="#e0e0e0"/>
+    <text x="27" y="15" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">FR</text>
+    
+    <!-- Target text -->
+    <rect x="-50" y="35" width="100" height="60" rx="5" ry="5" fill="#f0f0f0"/>
+    <text x="0" y="65" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">Bonjour, comment</text>
+    <text x="0" y="80" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">allez-vous?</text>
+    
+    <!-- Home button -->
+    <circle cx="0" cy="110" r="10" fill="#f0f0f0" stroke="#ddd" stroke-width="1"/>
+  </g>
+  
+  <!-- Right device - Tablet -->
+  <g transform="translate(550, 250)" filter="url(#shadow1)">
+    <!-- Tablet body -->
+    <rect x="-120" y="-160" width="240" height="320" rx="15" ry="15" fill="url(#deviceGradient)" stroke="#ddd" stroke-width="2"/>
+    
+    <!-- Tablet screen -->
+    <rect x="-110" y="-150" width="220" height="300" rx="10" ry="10" fill="#fff" stroke="#eee" stroke-width="1"/>
+    
+    <!-- Tablet content - Document translation -->
+    <rect x="-100" y="-140" width="200" height="40" rx="5" ry="5" fill="#30D5C8" opacity="0.8"/>
+    <text x="0" y="-115" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Document Translation</text>
+    
+    <!-- Document preview -->
+    <rect x="-100" y="-90" width="90" height="120" rx="5" ry="5" fill="#f0f0f0"/>
+    <line x1="-90" y1="-80" x2="-20" y2="-80" stroke="#ccc" stroke-width="1"/>
+    <line x1="-90" y1="-65" x2="-20" y2="-65" stroke="#ccc" stroke-width="1"/>
+    <line x1="-90" y1="-50" x2="-20" y2="-50" stroke="#ccc" stroke-width="1"/>
+    <line x1="-90" y1="-35" x2="-20" y2="-35" stroke="#ccc" stroke-width="1"/>
+    <line x1="-90" y1="-20" x2="-20" y2="-20" stroke="#ccc" stroke-width="1"/>
+    <line x1="-90" y1="-5" x2="-20" y2="-5" stroke="#ccc" stroke-width="1"/>
+    <line x1="-90" y1="10" x2="-20" y2="10" stroke="#ccc" stroke-width="1"/>
+    
+    <!-- Translated document -->
+    <rect x="10" y="-90" width="90" height="120" rx="5" ry="5" fill="#f0f0f0"/>
+    <line x1="20" y1="-80" x2="90" y2="-80" stroke="#ccc" stroke-width="1"/>
+    <line x1="20" y1="-65" x2="90" y2="-65" stroke="#ccc" stroke-width="1"/>
+    <line x1="20" y1="-50" x2="90" y2="-50" stroke="#ccc" stroke-width="1"/>
+    <line x1="20" y1="-35" x2="90" y2="-35" stroke="#ccc" stroke-width="1"/>
+    <line x1="20" y1="-20" x2="90" y2="-20" stroke="#ccc" stroke-width="1"/>
+    <line x1="20" y1="-5" x2="90" y2="-5" stroke="#ccc" stroke-width="1"/>
+    <line x1="20" y1="10" x2="90" y2="10" stroke="#ccc" stroke-width="1"/>
+    
+    <!-- Translation arrows -->
+    <path d="M-5,-30 L5,-30 L0,-20 Z" fill="#30D5C8"/>
+    <line x1="-10" y1="-30" x2="10" y2="-30" stroke="#30D5C8" stroke-width="2"/>
+    
+    <!-- Language indicators -->
+    <rect x="-100" y="40" width="90" height="30" rx="5" ry="5" fill="#e0e0e0"/>
+    <text x="-55" y="60" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">English</text>
+    
+    <rect x="10" y="40" width="90" height="30" rx="5" ry="5" fill="#e0e0e0"/>
+    <text x="55" y="60" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">French</text>
+    
+    <!-- Action buttons -->
+    <rect x="-100" y="80" width="200" height="40" rx="5" ry="5" fill="#30D5C8" opacity="0.8"/>
+    <text x="0" y="105" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Translate Document</text>
+  </g>
+  
+  <!-- Connecting elements -->
+  <path d="M300,250 C350,200 450,200 500,250" stroke="#30D5C8" stroke-width="3" fill="none" stroke-dasharray="10,5"/>
+  
+  <!-- 3D floating elements -->
+  <g transform="translate(400, 120)" filter="url(#shadow2)">
+    <circle cx="0" cy="0" r="40" fill="#30D5C8" opacity="0.8"/>
+    <text x="0" y="5" font-family="Arial" font-size="16" fill="white" text-anchor="middle">LingoLink</text>
+  </g>
+  
+  <g transform="translate(320, 400)" filter="url(#shadow2)">
+    <circle cx="0" cy="0" r="25" fill="#30D5C8" opacity="0.6"/>
+    <text x="0" y="5" font-family="Arial" font-size="12" fill="white" text-anchor="middle">EN</text>
+  </g>
+  
+  <g transform="translate(400, 400)" filter="url(#shadow2)">
+    <circle cx="0" cy="0" r="25" fill="#30D5C8" opacity="0.6"/>
+    <text x="0" y="5" font-family="Arial" font-size="12" fill="white" text-anchor="middle">FR</text>
+  </g>
+  
+  <g transform="translate(480, 400)" filter="url(#shadow2)">
+    <circle cx="0" cy="0" r="25" fill="#30D5C8" opacity="0.6"/>
+    <text x="0" y="5" font-family="Arial" font-size="12" fill="white" text-anchor="middle">ES</text>
+  </g>
+</svg>

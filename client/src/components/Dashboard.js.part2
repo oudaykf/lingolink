@@ -1,0 +1,1367 @@
+﻿                    className={activeView === 'find-translator' ? 'active' : ''}
+                    onClick={() => setActiveView('find-translator')}
+                  >
+                    <SearchIcon />
+                    <span>{t('findTranslator')}</span>
+                  </li>
+                  <li
+                    className={activeView === 'price-calculator' ? 'active' : ''}
+                    onClick={() => setActiveView('price-calculator')}
+                  >
+                    <CalculatorIcon />
+                    <span>{t('priceCalculator')}</span>
+                  </li>
+                </>
+              )}
+
+              {/* Translator-specific menu items */}
+              {user.userType === 'translator' && (
+                <>
+                  <li
+                    className={activeView === 'requests' ? 'active' : ''}
+                    onClick={() => setActiveView('requests')}
+                  >
+                    <RequestsIcon />
+                    <span>{t('translationRequests')}</span>
+                  </li>
+                  <li
+                    className={activeView === 'messages' ? 'active' : ''}
+                    onClick={() => setActiveView('messages')}
+                  >
+                    <MessagesIcon />
+                    <span>{t('clientMessages')}</span>
+                  </li>
+                </>
+              )}
+
+              <li
+                className={activeView === 'profile' ? 'active' : ''}
+                onClick={() => setActiveView('profile')}
+              >
+                <ProfileIcon />
+                <span>{t('yourProfile')}</span>
+              </li>
+
+              <li
+                className={activeView === 'settings' ? 'active' : ''}
+                onClick={() => setActiveView('settings')}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span>{t('settings')}</span>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <main className="dashboard-main">
+          {activeView === 'dashboard' && (
+            <>
+              {error && <div className="error-message">{error}</div>}
+
+              <div className="welcome-banner">
+                <div className="decoration"></div>
+                <div className="content">
+                  <h2>{t('welcomeBack')}, {user.name}!</h2>
+                  <div className="user-role-indicator">
+                    <span className="user-role-icon">
+                      {user.userType === 'client' ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                      )}
+                    </span>
+                    <span className="user-role-text">You are logged in as a <strong>{user.userType === 'client' ? t('client') : t('translator')}</strong></span>
+                  </div>
+                  <p>{user.userType === 'client' ? t('clientDescription') : t('translatorDescription')}</p>
+
+                  {/* Show different primary action button based on user type */}
+                  {user.userType === 'client' ? (
+                    <button
+                      className="action-button action-button-primary"
+                      onClick={() => setActiveView('new')}
+                    >
+                      <PlusIcon /> {t('newTranslationRequest')}
+                    </button>
+                  ) : (
+                    <button
+                      className="action-button action-button-primary"
+                      onClick={() => setActiveView('requests')}
+                    >
+                      <RequestsIcon /> {t('viewTranslationRequests')}
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Quick actions - different for each user type */}
+              <div className="quick-actions">
+                {user.userType === 'client' ? (
+                  <>
+                    <button
+                      className="action-button action-button-primary"
+                      onClick={() => setActiveView('new')}
+                    >
+                      <PlusIcon /> New Translation
+                    </button>
+                    <button
+                      className="action-button"
+                      onClick={() => setActiveView('find-translator')}
+                    >
+                      <SearchIcon /> Find Translator
+                    </button>
+                    <button
+                      className="action-button"
+                      onClick={() => setActiveView('price-calculator')}
+                    >
+                      <CalculatorIcon /> Calculate Price
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="action-button action-button-primary"
+                      onClick={() => setActiveView('requests')}
+                    >
+                      <RequestsIcon /> View Requests
+                    </button>
+                    <button
+                      className="action-button"
+                      onClick={() => setActiveView('translations')}
+                    >
+                      <DocumentIcon /> My Translations
+                    </button>
+                    <button
+                      className="action-button"
+                      onClick={() => setActiveView('messages')}
+                    >
+                      <MessagesIcon /> Messages
+                    </button>
+                  </>
+                )}
+              </div>
+
+              <div className="dashboard-grid">
+                <div className="dashboard-card user-profile-card">
+                  <div className="dashboard-card-header">
+                    <h3 className="dashboard-card-title">{t('yourProfile')}</h3>
+                    <div className="dashboard-card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="user-profile-content">
+                    <div className="user-profile-name">{user.name}</div>
+                    <div className="user-profile-email">{user.email}</div>
+                    <div className={`user-profile-type ${user.userType}`}>
+                      <span className="user-profile-type-icon">
+                        {user.userType === 'client' ? (
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                          </svg>
+                        ) : (
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                          </svg>
+                        )}
+                      </span>
+                      <span className="user-profile-type-text">{user.userType === 'client' ? 'Client Account' : 'Translator Account'}</span>
+                    </div>
+                    <div className="user-profile-actions">
+                      <button className="user-profile-button" onClick={() => setActiveView('settings')}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="3"></circle>
+                          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        {t('editProfile')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Different stats cards based on user type */}
+                {user.userType === 'client' ? (
+                  <>
+                    <div className="dashboard-card">
+                      <div className="dashboard-card-header">
+                        <h3 className="dashboard-card-title">{t('activeRequests')}</h3>
+                        <div className="dashboard-card-icon">
+                          <DocumentIcon />
+                        </div>
+                      </div>
+                      <div className="dashboard-card-value">{stats.active}</div>
+                      <div className="dashboard-card-description">
+                        {stats.active === 0 ? 'No active translation requests' :
+                         stats.active === 1 ? '1 translation request in progress' :
+                         `${stats.active} translation requests in progress`}
+                      </div>
+                    </div>
+
+                    <div className="dashboard-card">
+                      <div className="dashboard-card-header">
+                        <h3 className="dashboard-card-title">{t('completed')}</h3>
+                        <div className="dashboard-card-icon">
+                          <CheckIcon />
+                        </div>
+                      </div>
+                      <div className="dashboard-card-value">{stats.completed}</div>
+                      <div className="dashboard-card-description">
+                        {stats.completed === 0 ? 'No completed translations' :
+                         stats.completed === 1 ? '1 translation completed' :
+                         `${stats.completed} translations completed`}
+                      </div>
+                    </div>
+
+                    <div className="dashboard-card">
+                      <div className="dashboard-card-header">
+                        <h3 className="dashboard-card-title">{t('totalWords')}</h3>
+                        <div className="dashboard-card-icon">
+                          <WordsIcon />
+                        </div>
+                      </div>
+                      <div className="dashboard-card-value">{stats.totalWords}</div>
+                      <div className="dashboard-card-description">
+                        {stats.totalWords === 0 ? 'No words translated yet' :
+                         stats.totalWords === 1 ? '1 word translated' :
+                         `${stats.totalWords} words translated`}
+                      </div>
+                      {stats.totalWords > 0 && (
+                        <div className="progress-container">
+                          <div
+                            className="progress-bar"
+                            style={{ width: `${Math.min(100, (stats.totalWords / 1000) * 100)}%` }}
+                          ></div>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="dashboard-card">
+                      <div className="dashboard-card-header">
+                        <h3 className="dashboard-card-title">{t('availableRequests')}</h3>
+                        <div className="dashboard-card-icon">
+                          <RequestsIcon />
+                        </div>
+                      </div>
+                      <div className="dashboard-card-value">{stats.active}</div>
+                      <div className="dashboard-card-description">
+                        {stats.active === 0 ? 'No available translation requests' :
+                         stats.active === 1 ? '1 translation request available' :
+                         `${stats.active} translation requests available`}
+                      </div>
+                    </div>
+
+                    <div className="dashboard-card">
+                      <div className="dashboard-card-header">
+                        <h3 className="dashboard-card-title">{t('completedJobs')}</h3>
+                        <div className="dashboard-card-icon">
+                          <CheckIcon />
+                        </div>
+                      </div>
+                      <div className="dashboard-card-value">{stats.completed}</div>
+                      <div className="dashboard-card-description">
+                        {stats.completed === 0 ? 'No completed jobs' :
+                         stats.completed === 1 ? '1 job completed' :
+                         `${stats.completed} jobs completed`}
+                      </div>
+                    </div>
+
+                    <div className="dashboard-card">
+                      <div className="dashboard-card-header">
+                        <h3 className="dashboard-card-title">{t('earnings')}</h3>
+                        <div className="dashboard-card-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                          </svg>
+                        </div>
+                      </div>
+                      <div className="dashboard-card-value">$0</div>
+                      <div className="dashboard-card-description">Total earnings from completed translations</div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="dashboard-recent">
+                <h3>{t('recentActivity')}</h3>
+                {loading ? (
+                  <div className="loading">Loading...</div>
+                ) : translationItems.length > 0 ? (
+                  <div className="activity-list">
+                    {translationItems.slice(0, 5).map(translation => (
+                      <div key={translation.id} className="activity-item">
+                        <div className="activity-icon">
+                          <ActivityIcon />
+                        </div>
+                        <div className="activity-content">
+                          <div className="activity-title">
+                            Translation from {translation.sourceLanguage.toUpperCase()} to {translation.targetLanguage.toUpperCase()}
+                            <span className={`translation-status status-${translation.status}`}>{translation.status}</span>
+                          </div>
+                          <div className="translation-text">{translation.originalText.substring(0, 80)}...</div>
+                          <div className="activity-time">{new Date(translation.createdAt).toLocaleString()}</div>
+                        </div>
+                      </div>
+                    ))}
+                    <button
+                      className="view-all-btn"
+                      onClick={() => setActiveView('translations')}
+                    >
+                      View All Translations
+                    </button>
+                  </div>
+                ) : (
+                  <div className="empty-state">
+                    <p>No recent activity to display.</p>
+                    <button
+                      className="new-translation-btn"
+                      onClick={() => setActiveView('new')}
+                    >
+                      <PlusIcon /> Start a New Translation
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {activeView === 'translations' && (
+            <>
+              <h2>{user.userType === 'client' ? 'My Translations' : 'My Translation Work'}</h2>
+
+              {error && <div className="error-message">{error}</div>}
+
+              {loading ? (
+                <div className="loading">Loading...</div>
+              ) : translationItems.length > 0 ? (
+                <div className="translations-list full-list">
+                  {translationItems.map(translation => (
+                    <div key={translation.id} className="translation-item">
+                      <div className="translation-header">
+                        <span className="translation-languages">{translation.sourceLanguage} â†’ {translation.targetLanguage}</span>
+                        <span className={`translation-status status-${translation.status}`}>{translation.status}</span>
+                      </div>
+                      <div className="translation-text">{translation.originalText.substring(0, 100)}...</div>
+                      <div className="translation-meta">
+                        <span>{translation.wordCount} words</span>
+                        <span>{new Date(translation.createdAt).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="empty-state">
+                  <p>You don't have any translations yet.</p>
+                  <button
+                    className="new-translation-btn"
+                    onClick={() => setActiveView('new')}
+                  >
+                    Start a New Translation
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+
+          {activeView === 'new' && (
+            <>
+              <h2>New Translation</h2>
+
+              {error && <div className="error-message">{error}</div>}
+
+              <form onSubmit={handleCreateTranslation} className="translation-form">
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="sourceLanguage">From</label>
+                    <select
+                      id="sourceLanguage"
+                      name="sourceLanguage"
+                      value={newTranslation.sourceLanguage}
+                      onChange={handleInputChange}
+                    >
+                      <option value="en">English</option>
+                      <option value="fr">French</option>
+                      <option value="es">Spanish</option>
+                      <option value="de">German</option>
+                      <option value="it">Italian</option>
+                      <option value="pt">Portuguese</option>
+                      <option value="ru">Russian</option>
+                      <option value="zh">Chinese</option>
+                      <option value="ja">Japanese</option>
+                      <option value="ar">Arabic</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="targetLanguage">To</label>
+                    <select
+                      id="targetLanguage"
+                      name="targetLanguage"
+                      value={newTranslation.targetLanguage}
+                      onChange={handleInputChange}
+                    >
+                      <option value="en">English</option>
+                      <option value="fr">French</option>
+                      <option value="es">Spanish</option>
+                      <option value="de">German</option>
+                      <option value="it">Italian</option>
+                      <option value="pt">Portuguese</option>
+                      <option value="ru">Russian</option>
+                      <option value="zh">Chinese</option>
+                      <option value="ja">Japanese</option>
+                      <option value="ar">Arabic</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="originalText">Text to Translate</label>
+                  <textarea
+                    id="originalText"
+                    name="originalText"
+                    value={newTranslation.originalText}
+                    onChange={handleInputChange}
+                    placeholder="Enter text to translate..."
+                    rows="8"
+                    required
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className="submit-btn"
+                  disabled={loading}
+                >
+                  {loading ? 'Creating...' : 'Create Translation'}
+                </button>
+              </form>
+            </>
+          )}
+
+          {activeView === 'find-translator' && (
+            <>
+              <h2>Find a Translator</h2>
+
+              <div className="find-translator-container">
+                <div className="search-filters">
+                  <div className="filter-group">
+                    <label>Language Pair</label>
+                    <div className="language-pair-selector">
+                      <select className="language-select">
+                        <option value="">Source Language</option>
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="es">Spanish</option>
+                        <option value="de">German</option>
+                        <option value="it">Italian</option>
+                        <option value="ar">Arabic</option>
+                      </select>
+                      <div className="language-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </div>
+                      <select className="language-select">
+                        <option value="">Target Language</option>
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="es">Spanish</option>
+                        <option value="de">German</option>
+                        <option value="it">Italian</option>
+                        <option value="ar">Arabic</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="filter-group">
+                    <label>Specialization</label>
+                    <select className="filter-select">
+                      <option value="">All Specializations</option>
+                      <option value="legal">Legal</option>
+                      <option value="medical">Medical</option>
+                      <option value="technical">Technical</option>
+                      <option value="financial">Financial</option>
+                      <option value="marketing">Marketing</option>
+                      <option value="literary">Literary</option>
+                    </select>
+                  </div>
+
+                  <div className="filter-group">
+                    <label>Rating</label>
+                    <div className="rating-filter">
+                      <label className="rating-option">
+                        <input type="radio" name="rating" value="all" defaultChecked />
+                        <span>All</span>
+                      </label>
+                      <label className="rating-option">
+                        <input type="radio" name="rating" value="4+" />
+                        <span>4+ Stars</span>
+                      </label>
+                      <label className="rating-option">
+                        <input type="radio" name="rating" value="5" />
+                        <span>5 Stars</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <button className="search-button">
+                    <SearchIcon /> Search Translators
+                  </button>
+                </div>
+
+                <div className="translator-results">
+                  <div className="translator-card">
+                    <div className="translator-header">
+                      <div className="translator-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                      <div className="translator-info">
+                        <h3>Sarah Johnson</h3>
+                        <div className="translator-languages">English â†” French, Spanish</div>
+                        <div className="translator-rating">
+                          <span className="stars">â˜…â˜…â˜…â˜…â˜…</span>
+                          <span className="rating-count">(48 reviews)</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="translator-specialties">
+                      <span className="specialty-tag">Legal</span>
+                      <span className="specialty-tag">Marketing</span>
+                      <span className="specialty-tag">Technical</span>
+                    </div>
+                    <div className="translator-description">
+                      Professional translator with 8+ years of experience in legal and marketing translations. Certified by the American Translators Association.
+                    </div>
+                    <div className="translator-stats">
+                      <div className="stat">
+                        <div className="stat-value">156</div>
+                        <div className="stat-label">Projects</div>
+                      </div>
+                      <div className="stat">
+                        <div className="stat-value">99%</div>
+                        <div className="stat-label">On Time</div>
+                      </div>
+                      <div className="stat">
+                        <div className="stat-value">$0.12</div>
+                        <div className="stat-label">Per Word</div>
+                      </div>
+                    </div>
+                    <div className="translator-actions">
+                      <button className="action-button action-button-primary">Contact</button>
+                      <button className="action-button">View Profile</button>
+                    </div>
+                  </div>
+
+                  <div className="translator-card">
+                    <div className="translator-header">
+                      <div className="translator-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                      <div className="translator-info">
+                        <h3>Miguel Fernandez</h3>
+                        <div className="translator-languages">Spanish â†” English, French</div>
+                        <div className="translator-rating">
+                          <span className="stars">â˜…â˜…â˜…â˜…â˜†</span>
+                          <span className="rating-count">(32 reviews)</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="translator-specialties">
+                      <span className="specialty-tag">Medical</span>
+                      <span className="specialty-tag">Scientific</span>
+                    </div>
+                    <div className="translator-description">
+                      Medical translator with background in healthcare. Specialized in translating medical documents, research papers, and pharmaceutical content.
+                    </div>
+                    <div className="translator-stats">
+                      <div className="stat">
+                        <div className="stat-value">98</div>
+                        <div className="stat-label">Projects</div>
+                      </div>
+                      <div className="stat">
+                        <div className="stat-value">97%</div>
+                        <div className="stat-label">On Time</div>
+                      </div>
+                      <div className="stat">
+                        <div className="stat-value">$0.14</div>
+                        <div className="stat-label">Per Word</div>
+                      </div>
+                    </div>
+                    <div className="translator-actions">
+                      <button className="action-button action-button-primary">Contact</button>
+                      <button className="action-button">View Profile</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeView === 'price-calculator' && (
+            <>
+              <h2>Translation Price Calculator</h2>
+
+              <div className="calculator-container">
+                <div className="calculator-form">
+                  <div className="form-group">
+                    <label>Source Language</label>
+                    <select className="form-control">
+                      <option value="">Select source language</option>
+                      <option value="en">English</option>
+                      <option value="fr">French</option>
+                      <option value="es">Spanish</option>
+                      <option value="de">German</option>
+                      <option value="it">Italian</option>
+                      <option value="ar">Arabic</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Target Language</label>
+                    <select className="form-control">
+                      <option value="">Select target language</option>
+                      <option value="en">English</option>
+                      <option value="fr">French</option>
+                      <option value="es">Spanish</option>
+                      <option value="de">German</option>
+                      <option value="it">Italian</option>
+                      <option value="ar">Arabic</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Document Type</label>
+                    <select className="form-control">
+                      <option value="general">General</option>
+                      <option value="legal">Legal</option>
+                      <option value="medical">Medical</option>
+                      <option value="technical">Technical</option>
+                      <option value="financial">Financial</option>
+                      <option value="marketing">Marketing</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Word Count</label>
+                    <input type="number" className="form-control" placeholder="Enter number of words" min="1" />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Delivery Time</label>
+                    <select className="form-control">
+                      <option value="standard">Standard (3-5 days)</option>
+                      <option value="express">Express (1-2 days)</option>
+                      <option value="urgent">Urgent (24 hours)</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Additional Services</label>
+                    <div className="checkbox-group">
+                      <label className="checkbox-label">
+                        <input type="checkbox" /> Proofreading by second translator
+                      </label>
+                      <label className="checkbox-label">
+                        <input type="checkbox" /> Formatting and layout matching
+                      </label>
+                      <label className="checkbox-label">
+                        <input type="checkbox" /> Certified translation
+                      </label>
+                    </div>
+                  </div>
+
+                  <button className="calculate-button">
+                    <CalculatorIcon /> Calculate Price
+                  </button>
+                </div>
+
+                <div className="price-result">
+                  <div className="price-card">
+                    <h3>Estimated Price</h3>
+                    <div className="price-value">$120.00</div>
+                    <div className="price-breakdown">
+                      <div className="breakdown-item">
+                        <span>Base translation:</span>
+                        <span>$100.00</span>
+                      </div>
+                      <div className="breakdown-item">
+                        <span>Express delivery:</span>
+                        <span>$20.00</span>
+                      </div>
+                      <div className="breakdown-item">
+                        <span>Additional services:</span>
+                        <span>$0.00</span>
+                      </div>
+                    </div>
+                    <div className="price-actions">
+                      <button className="action-button action-button-primary">
+                        <PlusIcon /> Create Translation Request
+                      </button>
+                      <button className="action-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                          <polyline points="7 10 12 15 17 10"></polyline>
+                          <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Save Quote as PDF
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeView === 'requests' && (
+            <>
+              <h2>{t('translationRequests')}</h2>
+
+              <div className="requests-container">
+                <div className="requests-filters">
+                  <div className="filter-tabs">
+                    <button className="filter-tab active">Available</button>
+                    <button className="filter-tab">In Progress</button>
+                    <button className="filter-tab">Completed</button>
+                  </div>
+
+                  <div className="filter-options">
+                    <select className="filter-select">
+                      <option value="all">All Languages</option>
+                      <option value="en-fr">English to French</option>
+                      <option value="en-es">English to Spanish</option>
+                      <option value="fr-en">French to English</option>
+                      <option value="es-en">Spanish to English</option>
+                      <option value="ar-en">Arabic to English</option>
+                    </select>
+
+                    <select className="filter-select">
+                      <option value="all">All Categories</option>
+                      <option value="legal">Legal</option>
+                      <option value="medical">Medical</option>
+                      <option value="technical">Technical</option>
+                      <option value="financial">Financial</option>
+                      <option value="marketing">Marketing</option>
+                    </select>
+
+                    <select className="filter-select">
+                      <option value="all">All Deadlines</option>
+                      <option value="urgent">Urgent (24h)</option>
+                      <option value="3days">3 Days</option>
+                      <option value="week">1 Week</option>
+                      <option value="twoweeks">2+ Weeks</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="requests-list">
+                  <div className="request-card">
+                    <div className="request-header">
+                      <div className="request-title">Legal Contract Translation</div>
+                      <div className="request-price">$250</div>
+                    </div>
+
+                    <div className="request-details">
+                      <div className="detail-item">
+                        <span className="detail-label">Languages:</span>
+                        <span className="detail-value">English â†’ French</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Word Count:</span>
+                        <span className="detail-value">2,500 words</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Deadline:</span>
+                        <span className="detail-value">May 15, 2023 (5 days)</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Category:</span>
+                        <span className="detail-value">Legal</span>
+                      </div>
+                    </div>
+
+                    <div className="request-description">
+                      Employment contract that needs to be translated from English to French. The document contains standard legal terminology. Requires knowledge of Canadian French legal terms.
+                    </div>
+
+                    <div className="request-actions">
+                      <button className="action-button action-button-primary">Apply for this Job</button>
+                      <button className="action-button">View Details</button>
+                    </div>
+                  </div>
+
+                  <div className="request-card">
+                    <div className="request-header">
+                      <div className="request-title">Medical Research Paper</div>
+                      <div className="request-price">$180</div>
+                    </div>
+
+                    <div className="request-details">
+                      <div className="detail-item">
+                        <span className="detail-label">Languages:</span>
+                        <span className="detail-value">Spanish â†’ English</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Word Count:</span>
+                        <span className="detail-value">1,800 words</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Deadline:</span>
+                        <span className="detail-value">May 20, 2023 (10 days)</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Category:</span>
+                        <span className="detail-value">Medical</span>
+                      </div>
+                    </div>
+
+                    <div className="request-description">
+                      Research paper on cardiovascular health that needs to be translated from Spanish to English. Requires knowledge of medical terminology and academic writing style.
+                    </div>
+
+                    <div className="request-actions">
+                      <button className="action-button action-button-primary">Apply for this Job</button>
+                      <button className="action-button">View Details</button>
+                    </div>
+                  </div>
+
+                  <div className="request-card">
+                    <div className="request-header">
+                      <div className="request-title">Financial Report Translation</div>
+                      <div className="request-price">$320</div>
+                    </div>
+
+                    <div className="request-details">
+                      <div className="detail-item">
+                        <span className="detail-label">Languages:</span>
+                        <span className="detail-value">English â†’ Arabic</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Word Count:</span>
+                        <span className="detail-value">3,200 words</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Deadline:</span>
+                        <span className="detail-value">May 25, 2023 (15 days)</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">Category:</span>
+                        <span className="detail-value">Financial</span>
+                      </div>
+                    </div>
+
+                    <div className="request-description">
+                      Annual financial report for a multinational corporation. Requires expertise in financial terminology and accounting standards. Certified translation preferred.
+                    </div>
+
+                    <div className="request-actions">
+                      <button className="action-button action-button-primary">Apply for this Job</button>
+                      <button className="action-button">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeView === 'messages' && (
+            <>
+              <h2>{t('clientMessages')}</h2>
+
+              <div className="messages-container">
+                <div className="messages-sidebar">
+                  <div className="messages-search">
+                    <input type="text" placeholder="Search messages..." className="search-input" />
+                  </div>
+
+                  <div className="conversation-list">
+                    <div className="conversation-item active">
+                      <div className="conversation-avatar">
+                        JS
+                      </div>
+                      <div className="conversation-info">
+                        <div className="conversation-name">John Smith</div>
+                        <div className="conversation-preview">About the legal document translation...</div>
+                        <div className="conversation-time">2:45 PM</div>
+                      </div>
+                    </div>
+
+                    <div className="conversation-item">
+                      <div className="conversation-avatar">
+                        EJ
+                      </div>
+                      <div className="conversation-info">
+                        <div className="conversation-name">Emily Johnson</div>
+                        <div className="conversation-preview">Thank you for completing the translation...</div>
+                        <div className="conversation-time">Yesterday</div>
+                      </div>
+                    </div>
+
+                    <div className="conversation-item">
+                      <div className="conversation-avatar">
+                        MB
+                      </div>
+                      <div className="conversation-info">
+                        <div className="conversation-name">Michael Brown</div>
+                        <div className="conversation-preview">Can you provide a quote for...</div>
+                        <div className="conversation-time">May 10</div>
+                      </div>
+                    </div>
+
+                    <div className="conversation-item">
+                      <div className="conversation-avatar">
+                        AR
+                      </div>
+                      <div className="conversation-info">
+                        <div className="conversation-name">Anna Rodriguez</div>
+                        <div className="conversation-preview">I need a technical manual translated...</div>
+                        <div className="conversation-time">May 8</div>
+                      </div>
+                    </div>
+
+                    <div className="conversation-item">
+                      <div className="conversation-avatar">
+                        DK
+                      </div>
+                      <div className="conversation-info">
+                        <div className="conversation-name">David Kim</div>
+                        <div className="conversation-preview">The financial report translation looks...</div>
+                        <div className="conversation-time">May 5</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="messages-content">
+                  <div className="messages-header">
+                    <div className="contact-info">
+                      <div className="contact-name">John Smith</div>
+                      <div className="contact-status">Online</div>
+                    </div>
+                    <div className="messages-actions">
+                      <button className="message-action-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"></path>
+                          <circle cx="8" cy="9" r="2"></circle>
+                          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                        </svg>
+                      </button>
+                      <button className="message-action-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                      </button>
+                      <button className="message-action-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="1"></circle>
+                          <circle cx="19" cy="12" r="1"></circle>
+                          <circle cx="5" cy="12" r="1"></circle>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="messages-body">
+                    <div className="message-date">Today</div>
+
+                    <div className="message received">
+                      <div className="message-content">
+                        <p>Hello, I'm looking for someone to translate a legal contract from English to French. It's about 10 pages long. Are you available for this job?</p>
+                      </div>
+                      <div className="message-time">10:30 AM</div>
+                    </div>
+
+                    <div className="message sent">
+                      <div className="message-content">
+                        <p>Hi John, yes I'm available. I specialize in legal translations between English and French. Could you tell me more about the document and your deadline?</p>
+                      </div>
+                      <div className="message-time">10:45 AM</div>
+                    </div>
+
+                    <div className="message received">
+                      <div className="message-content">
+                        <p>It's an employment contract for our Canadian office. We need it by next Friday. Would that work for you?</p>
+                      </div>
+                      <div className="message-time">11:02 AM</div>
+                    </div>
+
+                    <div className="message sent">
+                      <div className="message-content">
+                        <p>Yes, that timeline works for me. I'm familiar with Canadian employment law terminology in both languages. Would you like me to provide a quote based on the word count?</p>
+                      </div>
+                      <div className="message-time">11:15 AM</div>
+                    </div>
+
+                    <div className="message received">
+                      <div className="message-content">
+                        <p>That would be great. The document is approximately 2,500 words. I can also send you a sample page if that helps with the quote.</p>
+                      </div>
+                      <div className="message-time">2:45 PM</div>
+                    </div>
+                  </div>
+
+                  <div className="messages-footer">
+                    <button className="message-action-button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                      </svg>
+                    </button>
+                    <button className="message-action-button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                    </button>
+                    <input type="text" placeholder="Type a message..." className="message-input" />
+                    <button className="send-button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeView === 'profile' && !isEditingProfile && (
+            <>
+              <h2>{t('yourProfile')}</h2>
+
+              {profileUpdateSuccess && (
+                <div className="success-message">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                  <span>Profile updated successfully!</span>
+                </div>
+              )}
+
+              <div className="profile-container">
+                <div className="profile-header">
+                  <div className="profile-avatar" style={user?.profileImage ? {backgroundImage: `url(${user.profileImage})`, backgroundSize: 'cover'} : {}}>
+                    {!user?.profileImage && <ProfileIcon />}
+                  </div>
+                  <div className="profile-title">
+                    <h3>{user?.name || 'User'}</h3>
+                    <div className="profile-subtitle">
+                      <span className="profile-type-badge">{user?.userType === 'client' ? t('client') : t('translator')}</span>
+                      <span className="profile-email">{user?.email || 'email@example.com'}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="profile-section">
+                  <h3>{t('accountInformation')}</h3>
+                  <div className="profile-info-grid">
+                    <div className="profile-info-item">
+                      <div className="info-label">{t('name')}</div>
+                      <div className="info-value">{user?.name || 'User'}</div>
+                    </div>
+                    <div className="profile-info-item">
+                      <div className="info-label">{t('email')}</div>
+                      <div className="info-value">{user?.email || 'email@example.com'}</div>
+                    </div>
+                    <div className="profile-info-item">
+                      <div className="info-label">{t('accountType')}</div>
+                      <div className="info-value">{user?.userType === 'client' ? t('client') : t('translator')}</div>
+                    </div>
+                    {user?.bio && (
+                      <div className="profile-info-item">
+                        <div className="info-label">{t('bio')}</div>
+                        <div className="info-value">{user.bio}</div>
+                      </div>
+                    )}
+                    {user?.phone && (
+                      <div className="profile-info-item">
+                        <div className="info-label">{t('phone')}</div>
+                        <div className="info-value">{user.phone}</div>
+                      </div>
+                    )}
+                    {user?.location && (
+                      <div className="profile-info-item">
+                        <div className="info-label">{t('location')}</div>
+                        <div className="info-value">{user.location}</div>
+                      </div>
+                    )}
+                    <div className="profile-info-item">
+                      <div className="info-label">{t('language')}</div>
+                      <div className="info-value">
+                        {currentLanguage === 'en' && t('english')}
+                        {currentLanguage === 'fr' && t('french')}
+                        {currentLanguage === 'es' && t('spanish')}
+                        {currentLanguage === 'ar' && t('arabic')}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {user && user.userType === 'translator' && (
+                  <div className="profile-section">
+                    <h3>Translator Information</h3>
+                    <div className="profile-info-grid">
+                      <div className="profile-info-item">
+                        <div className="info-label">Specializations</div>
+                        <div className="info-value">
+                          <div className="specialization-tags">
+                            {user.specializations && user.specializations.length > 0 ? (
+                              user.specializations.map((spec, index) => (
+                                <span key={index} className="specialization-tag">{spec}</span>
+                              ))
+                            ) : (
+                              <>
+                                <span className="specialization-tag">Legal</span>
+                                <span className="specialization-tag">Financial</span>
+                                <span className="specialization-tag">Technical</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="profile-info-item">
+                        <div className="info-label">Languages</div>
+                        <div className="info-value">
+                          <div className="language-pairs">
+                            {user.languages && user.languages.length > 0 ? (
+                              user.languages.map((lang, index) => {
+                                const langName = {
+                                  en: 'English',
+                                  fr: 'French',
+                                  es: 'Spanish',
+                                  ar: 'Arabic',
+                                  de: 'German',
+                                  it: 'Italian',
+                                  pt: 'Portuguese',
+                                  ru: 'Russian',
+                                  zh: 'Chinese'
+                                }[lang] || lang;
+                                return (
+                                  <span key={index} className="language-pair">{langName}</span>
+                                );
+                              })
+                            ) : (
+                              <>
+                                <span className="language-pair">English â†’ French</span>
+                                <span className="language-pair">English â†’ Spanish</span>
+                                <span className="language-pair">French â†’ English</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="profile-section">
+                  <h3>Account Statistics</h3>
+                  <div className="profile-stats-grid">
+                    <div className="profile-stat-card">
+                      <div className="stat-icon">
+                        <DocumentIcon />
+                      </div>
+                      <div className="stat-content">
+                        <div className="stat-value">{stats.active || 0}</div>
+                        <div className="stat-label">{user?.userType === 'client' ? t('activeRequests') : 'Active Jobs'}</div>
+                      </div>
+                    </div>
+                    <div className="profile-stat-card">
+                      <div className="stat-icon">
+                        <CheckIcon />
+                      </div>
+                      <div className="stat-content">
+                        <div className="stat-value">{stats.completed || 0}</div>
+                        <div className="stat-label">{t('completed')}</div>
+                      </div>
+                    </div>
+                    <div className="profile-stat-card">
+                      <div className="stat-icon">
+                        <WordsIcon />
+                      </div>
+                      <div className="stat-content">
+                        <div className="stat-value">{stats.totalWords || 0}</div>
+                        <div className="stat-label">{t('totalWords')}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="profile-actions">
+                  <button className="profile-edit-button" onClick={() => setIsEditingProfile(true)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    {t('editProfile')}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeView === 'profile' && isEditingProfile && (
+            <EditProfile
+              user={user}
+              onSave={handleSaveProfile}
+              onCancel={handleCancelEditProfile}
+              translations={translations}
+            />
+          )}
+
+          {activeView === 'settings' && (
+            <>
+              <h2>{t('settings')}</h2>
+
+              <div className="settings-section">
+                <h3>{t('accountInformation')}</h3>
+                <div className="user-info">
+                  <div className="info-row">
+                    <span className="info-label">{t('name')}:</span>
+                    <span className="info-value">{user.name}</span>
+                  </div>
+                  <div className="info-row">
+                    <span className="info-label">{t('email')}:</span>
+                    <span className="info-value">{user.email}</span>
+                  </div>
+                  <div className="info-row">
+                    <span className="info-label">{t('accountType')}:</span>
+                    <span className="info-value">{user.userType === 'client' ? t('client') : t('translator')}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="settings-section">
+                <h3>{t('personalization')}</h3>
+
+                <div className="personalization-options">
+                  {/* Language Settings */}
+                  <div className="personalization-group">
+                    <h4>{t('language')}</h4>
+                    <div className="language-options">
+                      <button
+                        className={`language-option ${currentLanguage === 'en' ? 'active' : ''}`}
+                        onClick={() => changeLanguage('en')}
+                      >
+                        <span className="language-flag">ðŸ‡ºðŸ‡¸</span>
+                        <span className="language-name">{t('english')}</span>
+                      </button>
+
+                      <button
+                        className={`language-option ${currentLanguage === 'fr' ? 'active' : ''}`}
+                        onClick={() => changeLanguage('fr')}
+                      >
+                        <span className="language-flag">ðŸ‡«ðŸ‡·</span>
+                        <span className="language-name">{t('french')}</span>
+                      </button>
+
+                      <button
+                        className={`language-option ${currentLanguage === 'es' ? 'active' : ''}`}
+                        onClick={() => changeLanguage('es')}
+                      >
+                        <span className="language-flag">ðŸ‡ªðŸ‡¸</span>
+                        <span className="language-name">{t('spanish')}</span>
+                      </button>
+
+                      <button
+                        className={`language-option ${currentLanguage === 'ar' ? 'active' : ''}`}
+                        onClick={() => changeLanguage('ar')}
+                      >
+                        <span className="language-flag">ðŸ‡¸ðŸ‡¦</span>
+                        <span className="language-name">{t('arabic')}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Theme Settings */}
+                  <div className="personalization-group">
+                    <h4>{t('theme')}</h4>
+                    <div className="theme-options">
+                      <button
+                        className={`theme-option ${!isDarkMode ? 'active' : ''}`}
+                        onClick={() => toggleTheme()}
+                      >
+                        <span className="theme-icon">â˜€ï¸</span>
+                        <span className="theme-name">{t('lightTheme')}</span>
+                      </button>
+
+                      <button
+                        className={`theme-option ${isDarkMode ? 'active' : ''}`}
+                        onClick={() => toggleTheme()}
+                      >
+                        <span className="theme-icon">ðŸŒ™</span>
+                        <span className="theme-name">{t('darkTheme')}</span>
+                      </button>
+
+                      <button className="advanced-settings-button" onClick={openSettingsModal}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="3"></circle>
+                          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        {t('advancedAppearanceSettings')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="settings-section">
+                <h3>{t('notifications')}</h3>
+                <div className="notification-options">
+                  <label className="notification-option">
+                    <input type="checkbox" defaultChecked />
+                    <span>{t('emailNotifications')}</span>
+                  </label>
+
+                  <label className="notification-option">
+                    <input type="checkbox" defaultChecked />
+                    <span>{t('browserNotifications')}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="settings-section">
+                <h3>{t('security')}</h3>
+                <button className="change-password-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                  Change Password
+                </button>
+              </div>
+
+              <div className="settings-actions">
+                <button className="save-settings-btn">{t('saveChanges')}</button>
+              </div>
+            </>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

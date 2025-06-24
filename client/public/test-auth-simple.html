@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #20B2AA;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background-color: #20B2AA;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+    }
+    
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Authentication Test</h1>
+  
+  <form id="register-form">
+    <h2>Register</h2>
+    
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="userType">User Type</label>
+      <select id="userType">
+        <option value="client">Client</option>
+        <option value="translator">Translator</option>
+      </select>
+    </div>
+    
+    <button type="submit">Register</button>
+  </form>
+  
+  <div class="result" id="result"></div>
+  
+  <script>
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const userType = document.getElementById('userType').value;
+      
+      const resultElement = document.getElementById('result');
+      resultElement.innerHTML = 'Sending request...';
+      resultElement.className = 'result';
+      
+      try {
+        const response = await fetch('http://localhost:5001/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password, userType })
+        });
+        
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          const text = await response.text();
+          throw new Error(`Received non-JSON response: ${text.substring(0, 100)}...`);
+        }
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Registration failed');
+        }
+        
+        resultElement.innerHTML = `
+          <h3>Registration Successful!</h3>
+          <p>Name: ${data.user.name}</p>
+          <p>Email: ${data.user.email}</p>
+          <p>User Type: ${data.user.userType}</p>
+          <p>Token: ${data.token.substring(0, 20)}...</p>
+        `;
+      } catch (error) {
+        resultElement.innerHTML = `<p>Error: ${error.message}</p>`;
+        resultElement.className = 'result error';
+      }
+    });
+  </script>
+</body>
+</html>
