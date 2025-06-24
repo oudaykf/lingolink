@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import './App.css';
 import AuthPage from './components/AuthPage';
 import Dashboard from './components/Dashboard';
@@ -20,6 +20,15 @@ import NotificationProvider from './context/NotificationContext';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './components/ToastContext';
 import './components/Toast.css';
+
+// Page components
+import Features from './components/pages/Features';
+import About from './components/pages/About';
+import Careers from './components/pages/Careers';
+import Contact from './components/pages/Contact';
+import Privacy from './components/pages/Privacy';
+import Terms from './components/pages/Terms';
+import Security from './components/pages/Security';
 
 // Global API URL
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
@@ -558,21 +567,21 @@ function HomePage({ onAuthenticated }) {
             </div>
             <div className="footer-section">
               <h4>Product</h4>
-              <a href="/features">Features</a>
+              <Link to="/features">Features</Link>
               <a href="/pricing">Pricing</a>
               <a href="/enterprise">Enterprise</a>
             </div>
             <div className="footer-section">
               <h4>Company</h4>
-              <a href="/about">About</a>
-              <a href="/careers">Careers</a>
-              <a href="/contact">Contact</a>
+              <Link to="/about">About</Link>
+              <Link to="/careers">Careers</Link>
+              <Link to="/contact">Contact</Link>
             </div>
             <div className="footer-section">
               <h4>Legal</h4>
-              <a href="/privacy">Privacy</a>
-              <a href="/terms">Terms</a>
-              <a href="/security">Security</a>
+              <Link to="/privacy">Privacy</Link>
+              <Link to="/terms">Terms</Link>
+              <Link to="/security">Security</Link>
             </div>
           </div>
           <div className="footer-bottom">
@@ -642,6 +651,15 @@ function App() {
               <Route path="/translator/:id" element={<TranslatorProfilePage />} />
               <Route path="/admin" element={user?.userType === 'admin' ? <AdminPanel /> : <Navigate to="/dashboard" />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
+              
+              {/* Footer page routes */}
+              <Route path="/features" element={<Features />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/security" element={<Security />} />
             </Routes>
           </Router>
         </NotificationProvider>
