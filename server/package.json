@@ -4,8 +4,8 @@
   "description": "Backend server for LingoLink",
   "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "echo 'no build step needed'"
+    "start": "node app.js",
+    "build": "echo 'no build needed'"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
